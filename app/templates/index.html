@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NLP Tools</title>
+    <style>
+        body {
+            background: #111;
+            color: #ffd600;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background: #ffd600;
+            color: #111;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+        }
+        .task-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .task-btn {
+            background: #111;
+            color: #ffd600;
+            border: 2px solid #ffd600;
+            border-radius: 5px;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            text-decoration: none;
+        }
+        .task-btn.active, .task-btn:hover {
+            background: #ffd600;
+            color: #111;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #222;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 16px #0008;
+        }
+        label {
+            color: #ffd600;
+            font-weight: bold;
+        }
+        select, textarea {
+            width: 100%;
+            margin-bottom: 1rem;
+            background: #111;
+            color: #ffd600;
+            border: 1px solid #ffd600;
+            border-radius: 4px;
+            padding: 0.5rem;
+        }
+        .go-btn {
+            background: #ffd600;
+            color: #111;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1.2rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+        .go-btn:hover {
+            background: #fff200;
+        }
+        .example-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .example-row select {
+            flex: 1;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>NLP Toolbox</h1>
+    </div>
+    <div class="task-bar">
+        <a href="/?task=sentiment" class="task-btn{% if task == 'sentiment' %} active{% endif %}">Sentiment</a>
+        <a href="/?task=ner" class="task-btn{% if task == 'ner' %} active{% endif %}">NER</a>
+        <a href="/?task=summarize" class="task-btn{% if task == 'summarize' %} active{% endif %}">Summarize</a>
+        <a href="/?task=emotion" class="task-btn{% if task == 'emotion' %} active{% endif %}">Emotion</a>
+        <a href="/?task=qa" class="task-btn{% if task == 'qa' %} active{% endif %}">QA</a>
+    </div>
+    <div class="container">
+        <form id="nlp-form" action="/analyze/{{ task | default('sentiment') }}" method="post">
+            <label>Choose an example:</label>
+            {% if task == "qa" %}
+                {% for text in example_texts[:10] %}
+                {% set parts = text.split('||') %}
+                <div class="example-row">
+                    <div style="flex:1;">
+                        <span style="color:#ffd600;font-weight:bold;">Q:</span> {{ parts[0] }}<br>
+                        <span style="color:#ffd600;font-weight:bold;">Context:</span> <span style="color:#ffd600;">{{ parts[1] }}</span>
+                    </div>
+                    <button type="button" class="go-btn" onclick="fillQAExample({{ parts[0]|tojson }}, {{ parts[1]|tojson }})">Go</button>
+                </div>
+                {% endfor %}
+                <label>Or enter your own:</label><br>
+                <label>Question:</label>
+                <textarea name="text" id="user-text" rows="2" cols="50" placeholder="Enter your question..."></textarea>
+                <label>Context:</label>
+                <textarea name="context" id="user-context" rows="4" cols="50" placeholder="Enter the context to search for the answer..."></textarea>
+                <button type="submit" class="go-btn">Go</button>
+            {% else %}
+                {% for text in example_texts[:10] %}
+                <div class="example-row">
+                    <select name="example" onchange="handleExampleChange(this)">
+                        <option value="{{ text }}">{{ text }}</option>
+                    </select>
+                    <button type="button" class="go-btn" onclick="submitExample(this)">Go</button>
+                </div>
+                {% endfor %}
+                <label>Or enter your own text:</label><br>
+                <textarea name="text" id="user-text" rows="4" cols="50"></textarea>
+                <button type="submit" class="go-btn">Go</button>
+            {% endif %}
+        </form>
+    </div>
+    <script>
+    function handleExampleChange(select) {
+        // No-op: handled on button click
+    }
+    function submitExample(btn) {
+        var form = document.getElementById('nlp-form');
+        var select = btn.parentElement.querySelector('select');
+        var value = select.value;
+        var task = "{{ task }}";
+        if (task === "qa") {
+            // Not used for QA, handled by fillQAExample
+        } else {
+            document.getElementById('user-text').value = value;
+        }
+        form.submit();
+    }
+    function fillQAExample(question, context) {
+        document.getElementById('user-text').value = question;
+        document.getElementById('user-context').value = context;
+        document.getElementById('nlp-form').submit();
+    }
+    </script>
+</body>
+</html>

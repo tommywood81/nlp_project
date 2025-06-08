@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <style>
+        body {
+            background: #111;
+            color: #ffd600;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 3rem auto;
+            background: #222;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 16px #0008;
+            text-align: center;
+        }
+        h2 {
+            color: #ffd600;
+            margin-bottom: 2rem;
+        }
+        .sentiment-label {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        .positive { background: #ffd600; color: #111; }
+        .negative { background: #ff5252; color: #fff; }
+        .neutral { background: #888; color: #fff; }
+        .info {
+            color: #ffd600;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .back-btn {
+            background: #ffd600;
+            color: #111;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1.2rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .back-btn:hover {
+            background: #fff200;
+        }
+        pre {
+            background: #222;
+            color: #ffd600;
+            border: none;
+            font-size: 1rem;
+            text-align: left;
+            padding: 1rem;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Analysis Result ({{ task|capitalize }})</h2>
+        {% if task == "sentiment" %}
+            <div class="sentiment-label {{ result.sentiment }}">
+                {{ result.sentiment|capitalize }}
+            </div>
+            <div class="info">
+                Polarity: {{ result.polarity }}<br>
+                Subjectivity: {{ result.subjectivity }}
+            </div>
+        {% else %}
+            <pre>{{ result }}</pre>
+        {% endif %}
+        <a href="/" class="back-btn">Back</a>
+    </div>
+</body>
+</html>

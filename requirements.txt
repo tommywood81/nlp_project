@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+spacy
+transformers
+textblob
+pydantic
+jinja2
+torch
+python-multipart
