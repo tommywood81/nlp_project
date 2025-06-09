@@ -94,52 +94,102 @@
         <a href="/?task=emotion" class="task-btn{% if task == 'emotion' %} active{% endif %}">Emotion</a>
         <a href="/?task=qa" class="task-btn{% if task == 'qa' %} active{% endif %}">QA</a>
     </div>
-    <div class="container">
-        <form id="nlp-form" action="/analyze/{{ task | default('sentiment') }}" method="post">
-            <label>Choose an example:</label>
-            {% if task == "qa" %}
-                {% for text in example_texts[:5] %}
-                {% set parts = text.split('||') %}
-                <div class="example-row">
-                    <div style="flex:1;">
-                        <span style="color:#ffd600;font-weight:bold;">Q:</span> {{ parts[0] }}<br>
-                        <span style="color:#ffd600;font-weight:bold;">Context:</span> <span style="color:#ffd600;">{{ parts[1] }}</span>
+    <div style="display: flex; justify-content: center; align-items: flex-start; gap: 2rem; max-width: 1200px; margin: 0 auto;">
+        <div class="container" style="flex: 2;">
+            <form id="nlp-form" action="/analyze/{{ task | default('sentiment') }}" method="post">
+                <label>Choose an example:</label>
+                {% if task == "qa" %}
+                    {% for text in example_texts[:5] %}
+                    {% set parts = text.split('||') %}
+                    <div class="example-row">
+                        <div style="flex:1;">
+                            <span style="color:#ffd600;font-weight:bold;">Q:</span> {{ parts[0] }}<br>
+                            <span style="color:#ffd600;font-weight:bold;">Context:</span> <span style="color:#ffd600;">{{ parts[1] }}</span>
+                        </div>
+                        <button type="button" class="go-btn" data-question="{{ parts[0]|e }}" data-context="{{ parts[1]|e }}">Go</button>
                     </div>
-                    <button type="button" class="go-btn" data-question="{{ parts[0]|e }}" data-context="{{ parts[1]|e }}">Go</button>
-                </div>
-                {% endfor %}
-                <label>Or enter your own:</label><br>
-                <label>Question:</label>
-                <textarea name="text" id="user-text" rows="2" cols="50" placeholder="Enter your question..."></textarea>
-                <label>Context:</label>
-                <textarea name="context" id="user-context" rows="4" cols="50" placeholder="Enter the context to search for the answer..."></textarea>
-                <button type="submit" class="go-btn">Go</button>
-            {% elif task == "summarize" %}
-                {% for text in example_texts[:5] %}
-                <div class="example-row" style="align-items: flex-start;">
-                    <div style="flex:1; max-height: 120px; overflow-y: auto; background: #191919; color: #ffd600; border-radius: 6px; padding: 0.7rem; margin-bottom: 0.5rem; font-size: 1rem;">
-                        {{ text }}
+                    {% endfor %}
+                    <label>Or enter your own:</label><br>
+                    <label>Question:</label>
+                    <textarea name="text" id="user-text" rows="2" cols="50" placeholder="Enter your question..."></textarea>
+                    <label>Context:</label>
+                    <textarea name="context" id="user-context" rows="4" cols="50" placeholder="Enter the context to search for the answer..."></textarea>
+                    <button type="submit" class="go-btn">Go</button>
+                {% elif task == "summarize" %}
+                    {% for text in example_texts[:5] %}
+                    <div class="example-row" style="align-items: flex-start;">
+                        <div style="flex:1; max-height: 120px; overflow-y: auto; background: #191919; color: #ffd600; border-radius: 6px; padding: 0.7rem; margin-bottom: 0.5rem; font-size: 1rem;">
+                            {{ text }}
+                        </div>
+                        <button type="button" class="go-btn" data-summary="{{ text|e }}">Go</button>
                     </div>
-                    <button type="button" class="go-btn" data-summary="{{ text|e }}">Go</button>
-                </div>
-                {% endfor %}
-                <label>Or enter your own text:</label><br>
-                <textarea name="text" id="user-text" rows="6" cols="50"></textarea>
-                <button type="submit" class="go-btn">Go</button>
-            {% else %}
-                {% for text in example_texts[:10] %}
-                <div class="example-row">
-                    <select name="example" onchange="handleExampleChange(this)">
-                        <option value="{{ text }}">{{ text }}</option>
-                    </select>
-                    <button type="button" class="go-btn" onclick="submitExample(this)">Go</button>
-                </div>
-                {% endfor %}
-                <label>Or enter your own text:</label><br>
-                <textarea name="text" id="user-text" rows="4" cols="50"></textarea>
-                <button type="submit" class="go-btn">Go</button>
-            {% endif %}
-        </form>
+                    {% endfor %}
+                    <label>Or enter your own text:</label><br>
+                    <textarea name="text" id="user-text" rows="6" cols="50"></textarea>
+                    <button type="submit" class="go-btn">Go</button>
+                {% else %}
+                    {% for text in example_texts[:10] %}
+                    <div class="example-row">
+                        <select name="example" onchange="handleExampleChange(this)">
+                            <option value="{{ text }}">{{ text }}</option>
+                        </select>
+                        <button type="button" class="go-btn" onclick="submitExample(this)">Go</button>
+                    </div>
+                    {% endfor %}
+                    <label>Or enter your own text:</label><br>
+                    <textarea name="text" id="user-text" rows="4" cols="50"></textarea>
+                    <button type="submit" class="go-btn">Go</button>
+                {% endif %}
+            </form>
+        </div>
+        {% set model_infos = {
+          'sentiment': {
+            'title': 'Sentiment (TextBlob)',
+            'model': 'TextBlob (PatternAnalyzer)',
+            'accuracy': '~60-70% on movie reviews (not SOTA, but fast and simple)',
+            'used_by': 'Prototyping, education, quick sentiment checks',
+            'description': 'Rule-based, lexicon-driven sentiment analysis.'
+          },
+          'ner': {
+            'title': 'NER (spaCy en_core_web_sm)',
+            'model': 'spaCy en_core_web_sm',
+            'accuracy': '~85% F-score (CoNLL-2003 NER)',
+            'used_by': 'Explosion AI, research, industry demos',
+            'description': 'Lightweight English NER, POS, and dependency parser.'
+          },
+          'summarize': {
+            'title': 'Summarize (t5-small)',
+            'model': 'HuggingFace t5-small',
+            'accuracy': 'ROUGE-2 F1 ~18-20 (CNN/DailyMail)',
+            'used_by': 'Research, demos, low-resource summarization',
+            'description': 'Transformer-based, pre-trained for text-to-text tasks.'
+          },
+          'emotion': {
+            'title': 'Emotion (distilbert-base-uncased-emotion)',
+            'model': 'bhadresh-savani/distilbert-base-uncased-emotion',
+            'accuracy': '~91% (GoEmotions dataset)',
+            'used_by': 'Emotion detection demos, chatbots',
+            'description': 'DistilBERT fine-tuned for emotion classification.'
+          },
+          'qa': {
+            'title': 'QA (distilbert-base-cased-distilled-squad)',
+            'model': 'distilbert/distilbert-base-cased-distilled-squad',
+            'accuracy': 'EM: 79.1, F1: 86.9 (SQuAD v1.1)',
+            'used_by': 'Lightweight QA demos, education',
+            'description': 'DistilBERT distilled from BERT, fine-tuned on SQuAD.'
+          }
+        } %}
+        <div class="model-info-box" style="flex:1; min-width:260px; max-width:340px; background:#222; border-radius:8px; color:#ffd600; padding:1.5em; margin-top:0; margin-bottom:2em;">
+          <h3 style="color:#ffd600;">Model Information</h3>
+          {% set info = model_infos.get(task, {}) %}
+          <div>
+            <strong>{{ info.title }}</strong><br>
+            <b>Model:</b> {{ info.model }}<br>
+            <b>Accuracy:</b> {{ info.accuracy }}<br>
+            <b>Used by:</b> {{ info.used_by }}<br>
+            <b>Description:</b> {{ info.description }}
+          </div>
+        </div>
     </div>
     <script>
     function handleExampleChange(select) {
