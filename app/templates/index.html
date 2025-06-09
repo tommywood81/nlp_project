@@ -98,14 +98,14 @@
         <form id="nlp-form" action="/analyze/{{ task | default('sentiment') }}" method="post">
             <label>Choose an example:</label>
             {% if task == "qa" %}
-                {% for text in example_texts[:10] %}
+                {% for text in example_texts[:5] %}
                 {% set parts = text.split('||') %}
                 <div class="example-row">
                     <div style="flex:1;">
                         <span style="color:#ffd600;font-weight:bold;">Q:</span> {{ parts[0] }}<br>
                         <span style="color:#ffd600;font-weight:bold;">Context:</span> <span style="color:#ffd600;">{{ parts[1] }}</span>
                     </div>
-                    <button type="button" class="go-btn" onclick="fillQAExample({{ parts[0]|tojson }}, {{ parts[1]|tojson }})">Go</button>
+                    <button type="button" class="go-btn" data-question="{{ parts[0]|e }}" data-context="{{ parts[1]|e }}">Go</button>
                 </div>
                 {% endfor %}
                 <label>Or enter your own:</label><br>
@@ -113,6 +113,18 @@
                 <textarea name="text" id="user-text" rows="2" cols="50" placeholder="Enter your question..."></textarea>
                 <label>Context:</label>
                 <textarea name="context" id="user-context" rows="4" cols="50" placeholder="Enter the context to search for the answer..."></textarea>
+                <button type="submit" class="go-btn">Go</button>
+            {% elif task == "summarize" %}
+                {% for text in example_texts[:5] %}
+                <div class="example-row" style="align-items: flex-start;">
+                    <div style="flex:1; max-height: 120px; overflow-y: auto; background: #191919; color: #ffd600; border-radius: 6px; padding: 0.7rem; margin-bottom: 0.5rem; font-size: 1rem;">
+                        {{ text }}
+                    </div>
+                    <button type="button" class="go-btn" data-summary="{{ text|e }}">Go</button>
+                </div>
+                {% endfor %}
+                <label>Or enter your own text:</label><br>
+                <textarea name="text" id="user-text" rows="6" cols="50"></textarea>
                 <button type="submit" class="go-btn">Go</button>
             {% else %}
                 {% for text in example_texts[:10] %}
@@ -145,11 +157,21 @@
         }
         form.submit();
     }
-    function fillQAExample(question, context) {
-        document.getElementById('user-text').value = question;
-        document.getElementById('user-context').value = context;
-        document.getElementById('nlp-form').submit();
-    }
+    // Add event listeners for QA Go buttons
+    document.querySelectorAll('.go-btn[data-question]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.getElementById('user-text').value = btn.getAttribute('data-question');
+            document.getElementById('user-context').value = btn.getAttribute('data-context');
+            document.getElementById('nlp-form').submit();
+        });
+    });
+    // Add event listeners for Summarize Go buttons
+    document.querySelectorAll('.go-btn[data-summary]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.getElementById('user-text').value = btn.getAttribute('data-summary');
+            document.getElementById('nlp-form').submit();
+        });
+    });
     </script>
 </body>
 </html>
