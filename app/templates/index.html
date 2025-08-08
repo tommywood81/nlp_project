@@ -4,17 +4,18 @@
     <title>NLP Tools</title>
     <style>
         body {
-            background: #111;
-            color: #ffd600;
+            background: #111111;
+            color: #eeeeee;
             font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             padding: 0;
         }
         .header {
-            background: #ffd600;
-            color: #111;
+            background: #222222;
+            color: #eeeeee;
             padding: 1rem 2rem;
             margin-bottom: 2rem;
+            border-bottom: 1px solid #333333;
         }
         .task-bar {
             display: flex;
@@ -23,9 +24,9 @@
             margin-bottom: 2rem;
         }
         .task-btn {
-            background: #111;
-            color: #ffd600;
-            border: 2px solid #ffd600;
+            background: #111111;
+            color: #eeeeee;
+            border: 1px solid #cccccc;
             border-radius: 5px;
             padding: 0.7rem 1.5rem;
             font-size: 1rem;
@@ -34,34 +35,34 @@
             text-decoration: none;
         }
         .task-btn.active, .task-btn:hover {
-            background: #ffd600;
-            color: #111;
+            background: #e0e0e0;
+            color: #111111;
         }
         .container {
             max-width: 600px;
             margin: 0 auto;
-            background: #222;
+            background: #222222;
             border-radius: 10px;
             padding: 2rem;
             box-shadow: 0 2px 16px #0008;
         }
         label {
-            color: #ffd600;
+            color: #e0e0e0;
             font-weight: bold;
         }
         select, textarea {
             width: 100%;
             margin-bottom: 1rem;
-            background: #111;
-            color: #ffd600;
-            border: 1px solid #ffd600;
+            background: #111111;
+            color: #eeeeee;
+            border: 1px solid #cccccc;
             border-radius: 4px;
             padding: 0.5rem;
         }
         .go-btn {
-            background: #ffd600;
-            color: #111;
-            border: none;
+            background: #e0e0e0;
+            color: #111111;
+            border: 1px solid #cccccc;
             border-radius: 4px;
             padding: 0.5rem 1.2rem;
             font-size: 1rem;
@@ -70,7 +71,7 @@
             margin-left: 0.5rem;
         }
         .go-btn:hover {
-            background: #fff200;
+            background: #ffffff;
         }
         .example-row {
             display: flex;
@@ -103,8 +104,8 @@
                     {% set parts = text.split('||') %}
                     <div class="example-row">
                         <div style="flex:1;">
-                            <span style="color:#ffd600;font-weight:bold;">Q:</span> {{ parts[0] }}<br>
-                            <span style="color:#ffd600;font-weight:bold;">Context:</span> <span style="color:#ffd600;">{{ parts[1] }}</span>
+                            <span style="color:#e0e0e0;font-weight:bold;">Q:</span> {{ parts[0] }}<br>
+                            <span style="color:#e0e0e0;font-weight:bold;">Context:</span> <span style="color:#e0e0e0;">{{ parts[1] }}</span>
                         </div>
                         <button type="button" class="go-btn" data-question="{{ parts[0]|e }}" data-context="{{ parts[1]|e }}">Go</button>
                     </div>
@@ -118,13 +119,13 @@
                 {% elif task == "summarize" %}
                     {% for text in example_texts[:5] %}
                     <div class="example-row" style="align-items: flex-start;">
-                        <div style="flex:1; max-height: 120px; overflow-y: auto; background: #191919; color: #ffd600; border-radius: 6px; padding: 0.7rem; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <div style="flex:1; max-height: 120px; overflow-y: auto; background: #191919; color: #eeeeee; border-radius: 6px; padding: 0.7rem; margin-bottom: 0.5rem; font-size: 1rem;">
                             {{ text }}
                         </div>
                         <button type="button" class="go-btn" data-summary="{{ text|e }}">Go</button>
                     </div>
                     {% endfor %}
-                    <label>Or enter your own text:</label><br>
+                     <label>Or enter your own text:</label><br>
                     <textarea name="text" id="user-text" rows="6" cols="50"></textarea>
                     <button type="submit" class="go-btn">Go</button>
                 {% else %}
@@ -142,7 +143,7 @@
                 {% endif %}
             </form>
         </div>
-        {% set model_infos = {
+         {% set model_infos = {
           'sentiment': {
             'title': 'Sentiment (TextBlob)',
             'model': 'TextBlob (PatternAnalyzer)',
@@ -179,8 +180,8 @@
             'description': 'DistilBERT distilled from BERT, fine-tuned on SQuAD.'
           }
         } %}
-        <div class="model-info-box" style="flex:1; min-width:260px; max-width:340px; background:#222; border-radius:8px; color:#ffd600; padding:1.5em; margin-top:0; margin-bottom:2em;">
-          <h3 style="color:#ffd600;">Model Information</h3>
+        <div class="model-info-box" style="flex:1; min-width:260px; max-width:340px; background:#222222; border-radius:8px; color:#eeeeee; padding:1.5em; margin-top:0; margin-bottom:2em;">
+          <h3 style="color:#eeeeee;">Model Information</h3>
           {% set info = model_infos.get(task, {}) %}
           <div>
             <strong>{{ info.title }}</strong><br>

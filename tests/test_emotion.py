@@ -8,3 +8,5 @@ def test_emotion():
     assert "score" in result
     assert isinstance(result["label"], str)
     assert isinstance(result["score"], float) 
+
+    #run tests with pytest --maxfail=1 --disable-warnings -v
