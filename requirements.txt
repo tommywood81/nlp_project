@@ -4,7 +4,11 @@ spacy
 transformers
 textblob
 pydantic
+pydantic-settings
 jinja2
 torch
 python-multipart
 pytest
+feedparser
+newspaper3k
+requests

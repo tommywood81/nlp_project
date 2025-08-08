@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ABC News - The Linguistic Expedition</title>
+  <style>
+    body { background: #111; color: #eee; font-family: Georgia, 'Times New Roman', serif; margin:0; padding:0; }
+    .header { background: #222; color: #eee; padding: 1rem 2rem; border-bottom: 1px solid #333; }
+    .container { max-width: 900px; margin: 2rem auto; background: #1a1a1a; padding: 1.5rem; border-radius: 10px; }
+    .feed-form { margin-bottom: 1rem; }
+    select { background:#111; color:#eee; border:1px solid #444; padding:0.4rem; border-radius: 6px; }
+    a { color: #ddd; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .article { padding: 0.8rem 0; border-bottom: 1px solid #333; }
+    .meta { color: #aaa; font-size: 0.9rem; }
+    .back { display:inline-block; margin-top:1rem; background:#eee; color:#111; padding:0.4rem 0.8rem; border-radius:6px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 style="margin:0;">The Linguistic Expedition</h1>
+    <div style="opacity:0.8;">Uncover the secrets hidden in ancient texts</div>
+  </div>
+  <div class="container">
+    <form class="feed-form" method="get" action="/news/browse">
+      <label>Select ABC feed:</label>
+      <select name="feed_name" onchange="this.form.submit()">
+        <option value="top_stories" {% if feed_name=='top_stories' %}selected{% endif %}>Top Stories</option>
+        <option value="australia" {% if feed_name=='australia' %}selected{% endif %}>Australia</option>
+        <option value="just_in" {% if feed_name=='just_in' %}selected{% endif %}>Just In</option>
+      </select>
+    </form>
+
+    {% if articles %}
+      {% for a in articles %}
+        <div class="article">
+          <div><a href="{{ a.link }}" target="_blank">{{ a.title }}</a></div>
+          <div class="meta">{{ a.published }}</div>
+          <div style="margin-top:0.4rem;">{{ a.summary|safe }}</div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div>No articles available.</div>
+    {% endif %}
+    <a class="back" href="/">Back to Dashboard</a>
+  </div>
+</body>
+</html>

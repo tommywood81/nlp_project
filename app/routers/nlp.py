@@ -6,70 +6,72 @@ from app.models.ner import NERStrategy
 from app.models.summarize import SummarizationStrategy
 from app.models.emotion import EmotionStrategy
 from app.models.qa import QAStrategy
+from typing import List
+
+try:
+    # Optional import to avoid hard dependency at import time in tests
+    from app.services.news_feed import fetch_abc_feed
+except Exception:  # pragma: no cover
+    fetch_abc_feed = None  # type: ignore
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
 
 example_texts = {
     "sentiment": [
-        "I love this product! It works perfectly.",
-        "This is the worst experience I've ever had.",
-        "I'm not sure how I feel about this.",
-        "Absolutely fantastic service!",
-        "The food was cold and tasteless.",
-        "It's okay, nothing special.",
-        "I'm so happy with my results!",
-        "I wouldn't recommend this to anyone.",
-        "It's just average, not good or bad.",
-        "This made my day!"
+        "The ancient temple revealed its secrets with magnificent golden treasures!",
+        "Beware the cursed chamber - it brings only death and despair.",
+        "The archaeological discovery is neither remarkable nor disappointing.",
+        "What an incredible find! The lost city of Atlantis awaits!",
+        "The expedition was a complete disaster with no valuable artifacts.",
+        "The ruins are interesting but not extraordinary.",
+        "I'm thrilled to have discovered this ancient manuscript!",
+        "This cursed tomb should never have been disturbed.",
+        "The excavation yielded mixed results - some artifacts, some disappointment.",
+        "The discovery of the Holy Grail fills me with joy!"
     ],
     "ner": [
-        "Barack Obama was born in Hawaii.",
-        "Apple released the new iPhone in California.",
-        "The Eiffel Tower is in Paris.",
-        "Amazon is hiring in Seattle.",
-        "Elon Musk founded SpaceX.",
-        "The Olympics will be held in Tokyo.",
-        "Google's headquarters are in Mountain View.",
-        "The Mona Lisa is displayed in the Louvre.",
-        "Mount Everest is the tallest mountain.",
-        "Tesla cars are popular in Europe."
+        "Indiana Jones discovered the Ark of the Covenant in Tanis, Egypt.",
+        "The Holy Grail was hidden in the Canyon of the Crescent Moon.",
+        "Dr. Henry Jones Sr. was a professor at Marshall College.",
+        "The Crystal Skull was found in the Amazon rainforest.",
+        "Marion Ravenwood owned the Raven's Nest bar in Nepal.",
+        "The Temple of Doom was located in Pankot Palace, India.",
+        "Marcus Brody was the curator of the National Museum.",
+        "Short Round helped Indiana escape from Shanghai.",
+        "The Lost Ark was stored in a massive government warehouse.",
+        "The Cross of Coronado was stolen from a museum in Utah."
     ],
     "summarize": [
-        "Artificial intelligence is transforming industries by automating tasks, improving efficiency, and enabling new capabilities that were previously impossible. Companies are investing heavily in AI research and development to stay competitive. As AI systems become more advanced, ethical considerations and regulations are increasingly important. The impact of AI on the workforce is a topic of ongoing debate, with both opportunities and challenges ahead. Ultimately, AI has the potential to reshape society in profound ways.",
-        "The quick brown fox jumps over the lazy dog. This sentence contains every letter in the English alphabet and is often used for typing practice. Typists and designers use it to test fonts and keyboards. Its origins date back to the late 19th century, and it remains popular in the digital age. The phrase is a staple in classrooms and offices around the world.",
-        "Climate change is a global challenge that requires urgent action from governments, businesses, and individuals to reduce carbon emissions and protect the environment. Rising temperatures are causing more frequent extreme weather events, such as hurricanes and wildfires. Scientists warn that without significant intervention, the consequences could be catastrophic for future generations. Renewable energy adoption and conservation efforts are key strategies in combating climate change. Public awareness and education play a crucial role in driving change.",
-        "The history of the internet dates back to the 1960s, evolving from a military project to the global network we use today. Early networks like ARPANET laid the foundation for modern connectivity. The invention of the World Wide Web in 1989 revolutionized information sharing and communication. Today, billions of people rely on the internet for work, education, and entertainment. The internet continues to evolve, shaping economies and cultures worldwide.",
-        "Renewable energy sources like solar and wind are becoming more affordable and widespread, helping to reduce reliance on fossil fuels. Governments are setting ambitious targets for clean energy adoption to combat climate change. Technological advancements have improved the efficiency and storage capabilities of renewables. Communities around the world are investing in green infrastructure and jobs. The transition to renewable energy is seen as essential for a sustainable future.",
-        "The novel tells the story of a young girl who overcomes adversity through courage and determination. Set in a small rural town, she faces numerous challenges, including poverty and social prejudice. With the support of her family and friends, she learns valuable life lessons and discovers her own strength. The narrative explores themes of resilience, hope, and the power of community. Critics have praised the book for its compelling characters and emotional depth.",
-        "Vaccines have played a crucial role in eradicating diseases and improving public health worldwide. The development of vaccines for illnesses like polio and measles has saved millions of lives. Recent advancements in vaccine technology have enabled rapid responses to emerging threats, such as COVID-19. Public health campaigns emphasize the importance of vaccination for community immunity. Ongoing research aims to create vaccines for even more diseases in the future.",
-        "The company reported record profits this quarter, driven by strong sales and innovative new products. Executives credited the success to a focus on customer satisfaction and operational efficiency. The launch of a new product line exceeded expectations, attracting positive media attention. Shareholders responded favorably, with stock prices reaching an all-time high. The company plans to reinvest profits into research and development for continued growth.",
-        "Space exploration has led to numerous technological advancements that benefit everyday life. Satellites provide critical data for weather forecasting, navigation, and communication. The International Space Station serves as a laboratory for scientific research and international cooperation. Private companies are now playing a larger role in space missions, driving innovation and reducing costs. The future of space exploration includes plans for lunar bases and missions to Mars.",
-        "Exercise and a balanced diet are essential for maintaining good health and preventing chronic diseases. Regular physical activity improves cardiovascular health, strengthens muscles, and boosts mental well-being. Nutritionists recommend a variety of fruits, vegetables, whole grains, and lean proteins. Healthy habits established early in life can lead to better outcomes in adulthood. Public health organizations promote wellness programs to encourage healthy lifestyles."
+        "Deep in the jungles of Peru, archaeologist Indiana Jones discovered an ancient temple complex that had remained hidden for centuries. The temple contained intricate hieroglyphics telling the story of a lost civilization that possessed advanced knowledge of astronomy and mathematics. Among the artifacts found were golden idols, ceremonial masks, and a mysterious crystal that seemed to glow with an otherworldly light. The discovery has sparked intense debate among scholars about the origins of this civilization and their connection to other ancient cultures. This find represents one of the most significant archaeological discoveries of the century.",
+        "The ancient city of Petra, carved into the red sandstone cliffs of Jordan, stands as a testament to the ingenuity of the Nabataean people. This remarkable archaeological site features elaborate tombs, temples, and a sophisticated water system that allowed the city to thrive in the harsh desert environment. The Treasury, with its ornate facade and hidden chambers, has captured the imagination of explorers and archaeologists for generations. Recent excavations have revealed new insights into the city's trading networks and cultural connections with ancient Egypt, Greece, and Rome.",
+        "The discovery of the Dead Sea Scrolls in the mid-20th century revolutionized our understanding of ancient Jewish texts and early Christianity. Found in caves near the Dead Sea, these ancient manuscripts include biblical texts, religious commentaries, and community rules dating back over 2,000 years. The scrolls provide invaluable insights into the religious and cultural practices of the time, offering scholars a window into the world of Second Temple Judaism. Their preservation in the arid climate of the Dead Sea region has allowed these fragile documents to survive for millennia.",
+        "The Great Wall of China, stretching over 13,000 miles across northern China, represents one of the most ambitious construction projects in human history. Built over centuries by various Chinese dynasties, the wall served as both a defensive barrier and a symbol of imperial power. The construction techniques used, including the use of local materials and sophisticated engineering methods, demonstrate the advanced capabilities of ancient Chinese builders. Today, the wall stands as a UNESCO World Heritage site and continues to attract millions of visitors each year.",
+        "The ancient Library of Alexandria, founded in the 3rd century BCE, was the greatest repository of knowledge in the ancient world. Housing hundreds of thousands of scrolls containing works from Greek, Egyptian, and other civilizations, the library served as a center of learning and scholarship. Scholars from across the Mediterranean world traveled to Alexandria to study and contribute to this vast collection of human knowledge. The library's destruction, whether by fire or gradual decline, represents one of the greatest losses of cultural heritage in history."
     ],
     "emotion": [
-        "I am so excited for my birthday party!",
-        "This news makes me really sad.",
-        "I'm furious about what happened yesterday.",
-        "I feel calm and relaxed by the ocean.",
-        "That movie was hilarious, I couldn't stop laughing!",
-        "I'm terrified of spiders.",
-        "I feel grateful for my friends and family.",
-        "I'm anxious about the upcoming exam.",
-        "Winning the award filled me with pride.",
-        "I'm disappointed with the results."
+        "I'm absolutely thrilled to have discovered the lost temple!",
+        "The ancient curse fills me with deep sorrow and regret.",
+        "I'm absolutely furious that the artifact was stolen!",
+        "The peaceful ruins bring me a sense of calm and wonder.",
+        "The discovery of the golden idol made me laugh with joy!",
+        "I'm terrified of the dark spirits that guard this tomb.",
+        "I feel grateful for the ancient wisdom preserved in these texts.",
+        "I'm anxious about what lies behind the sealed chamber door.",
+        "Finding the Holy Grail fills me with immense pride and accomplishment.",
+        "I'm disappointed that the treasure map led to an empty chamber."
     ],
     "qa": [
-        "What is the capital of France?||Paris is the capital and most populous city of France.",
-        "Who wrote Hamlet?||Hamlet is a tragedy written by William Shakespeare sometime between 1599 and 1601.",
-        "What is the boiling point of water?||Water boils at 100 degrees Celsius at standard atmospheric pressure.",
-        "Who painted the Mona Lisa?||The Mona Lisa was painted by Leonardo da Vinci in the early 16th century.",
-        "What is the largest planet in our solar system?||Jupiter is the largest planet in our solar system.",
-        "Who discovered penicillin?||Penicillin was discovered by Alexander Fleming in 1928.",
-        "What is the tallest mountain in the world?||Mount Everest is the tallest mountain in the world.",
-        "Who is the CEO of Tesla?||Elon Musk is the CEO of Tesla, Inc.",
-        "What is the chemical symbol for gold?||The chemical symbol for gold is Au.",
-        "What year did the first man land on the moon?||Neil Armstrong landed on the moon in 1969."
+        "Where was the Ark of the Covenant discovered?||Indiana Jones discovered the Ark of the Covenant in the ancient city of Tanis, Egypt, buried deep beneath the desert sands.",
+        "Who was Dr. Henry Jones Sr.?||Dr. Henry Jones Sr. was Indiana Jones's father, a professor of medieval literature who dedicated his life to finding the Holy Grail.",
+        "What is the Holy Grail?||The Holy Grail is the legendary cup used by Jesus Christ at the Last Supper, said to grant eternal life to those who drink from it.",
+        "Where was the Crystal Skull found?||The Crystal Skull was discovered in the depths of the Amazon rainforest, hidden within an ancient temple complex.",
+        "Who is Marion Ravenwood?||Marion Ravenwood was Indiana Jones's former lover and the daughter of his mentor, who owned the Raven's Nest bar in Nepal.",
+        "What is the Temple of Doom?||The Temple of Doom was an ancient temple located in Pankot Palace, India, where human sacrifices were performed to the goddess Kali.",
+        "Who is Marcus Brody?||Marcus Brody was the curator of the National Museum and a close friend of Indiana Jones, often helping with archaeological expeditions.",
+        "What is the Cross of Coronado?||The Cross of Coronado was a golden cross that belonged to Spanish conquistador Francisco Vásquez de Coronado, stolen from a museum in Utah.",
+        "Where is the Lost Ark stored?||The Lost Ark is stored in a massive government warehouse, hidden away among countless other artifacts and treasures.",
+        "What is the Canyon of the Crescent Moon?||The Canyon of the Crescent Moon is the location where the Holy Grail was hidden, accessible only through a series of deadly trials."
     ]
 }
 
@@ -84,7 +86,27 @@ strategies = {
 @router.get("/", response_class=HTMLResponse)
 def home(request: Request):
     task = request.query_params.get("task", "sentiment")
-    return templates.TemplateResponse("index.html", {"request": request, "example_texts": example_texts[task], "task": task})
+    use_news = request.query_params.get("use_news", "0") == "1"
+    feed_name = request.query_params.get("feed_name", "top_stories")
+
+    news_articles = []
+    if use_news and fetch_abc_feed is not None:
+        try:
+            news_articles = fetch_abc_feed(feed_name=feed_name, full_text=False)
+        except Exception:
+            news_articles = []
+
+    return templates.TemplateResponse(
+        "index.html",
+        {
+            "request": request,
+            "example_texts": example_texts[task],
+            "task": task,
+            "use_news": use_news,
+            "feed_name": feed_name,
+            "news_articles": news_articles,
+        },
+    )
 
 @router.post("/analyze/{task}", response_class=HTMLResponse)
 def analyze(request: Request, task: str, text: str = Form(...), context: str = Form("")):

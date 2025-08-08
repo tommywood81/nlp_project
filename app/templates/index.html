@@ -4,18 +4,21 @@
     <title>NLP Tools</title>
     <style>
         body {
-            background: #111111;
-            color: #eeeeee;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #2c1810 0%, #8b4513 50%, #d2691e 100%);
+            color: #f4e4bc;
+            font-family: 'Georgia', 'Times New Roman', serif;
             margin: 0;
             padding: 0;
+            background-attachment: fixed;
         }
         .header {
-            background: #222222;
-            color: #eeeeee;
-            padding: 1rem 2rem;
+            background: linear-gradient(90deg, #8b4513 0%, #a0522d 50%, #cd853f 100%);
+            color: #f4e4bc;
+            padding: 1.5rem 2rem;
             margin-bottom: 2rem;
-            border-bottom: 1px solid #333333;
+            border-bottom: 3px solid #654321;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
         .task-bar {
             display: flex;
@@ -24,54 +27,69 @@
             margin-bottom: 2rem;
         }
         .task-btn {
-            background: #111111;
-            color: #eeeeee;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-            padding: 0.7rem 1.5rem;
+            background: #654321;
+            color: #f4e4bc;
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            padding: 0.8rem 1.8rem;
             font-size: 1rem;
+            font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s, color 0.2s;
+            transition: all 0.3s ease;
             text-decoration: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .task-btn.active, .task-btn:hover {
-            background: #e0e0e0;
-            color: #111111;
+            background: #cd853f;
+            color: #2c1810;
+            border-color: #f4e4bc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
         .container {
             max-width: 600px;
             margin: 0 auto;
-            background: #222222;
-            border-radius: 10px;
+            background: rgba(44, 24, 16, 0.9);
+            border-radius: 12px;
             padding: 2rem;
-            box-shadow: 0 2px 16px #0008;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            border: 2px solid #8b4513;
+            backdrop-filter: blur(10px);
         }
         label {
-            color: #e0e0e0;
+            color: #f4e4bc;
             font-weight: bold;
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
         select, textarea {
             width: 100%;
             margin-bottom: 1rem;
-            background: #111111;
-            color: #eeeeee;
-            border: 1px solid #cccccc;
-            border-radius: 4px;
-            padding: 0.5rem;
+            background: rgba(101, 67, 33, 0.8);
+            color: #f4e4bc;
+            border: 2px solid #8b4513;
+            border-radius: 6px;
+            padding: 0.8rem;
+            font-family: 'Georgia', serif;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
         .go-btn {
-            background: #e0e0e0;
-            color: #111111;
-            border: 1px solid #cccccc;
-            border-radius: 4px;
-            padding: 0.5rem 1.2rem;
+            background: linear-gradient(45deg, #cd853f, #daa520);
+            color: #2c1810;
+            border: 2px solid #8b4513;
+            border-radius: 8px;
+            padding: 0.6rem 1.4rem;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             margin-left: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
         }
         .go-btn:hover {
-            background: #ffffff;
+            background: linear-gradient(45deg, #daa520, #ffd700);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.4);
         }
         .example-row {
             display: flex;
@@ -86,7 +104,15 @@
 </head>
 <body>
     <div class="header">
-        <h1>NLP Toolbox</h1>
+        <h1>The Linguistic Expedition</h1>
+        <p style="margin: 0.5rem 0 0 0; font-style: italic; font-size: 1.1rem;">Uncover the secrets hidden in ancient texts</p>
+        <div style="margin-top:0.5rem; font-size:0.95rem;">
+            <a href="/news/browse" style="color:#f4e4bc; text-decoration:underline; margin-right:1rem;">News Browser</a>
+            <a href="/?task={{ task }}&use_news=1" style="color:#f4e4bc; text-decoration:underline; margin-right:1rem;">Use ABC News Feed</a>
+            {% if use_news %}
+            <a href="/?task={{ task }}&use_news=0" style="color:#f4e4bc; text-decoration:underline;">Disable News Feed</a>
+            {% endif %}
+        </div>
     </div>
     <div class="task-bar">
         <a href="/?task=sentiment" class="task-btn{% if task == 'sentiment' %} active{% endif %}">Sentiment</a>
@@ -96,37 +122,68 @@
         <a href="/?task=qa" class="task-btn{% if task == 'qa' %} active{% endif %}">QA</a>
     </div>
     <div style="display: flex; justify-content: center; align-items: flex-start; gap: 2rem; max-width: 1200px; margin: 0 auto;">
+        {% if use_news %}
+        <div class="container" style="flex: 1; min-width: 280px; max-width: 340px;">
+            <form method="get" action="/">
+                <input type="hidden" name="task" value="{{ task }}" />
+                <input type="hidden" name="use_news" value="1" />
+                <label>Select ABC feed:</label>
+                <select name="feed_name" onchange="this.form.submit()">
+                    <option value="top_stories" {% if feed_name=='top_stories' %}selected{% endif %}>Top Stories</option>
+                    <option value="australia" {% if feed_name=='australia' %}selected{% endif %}>Australia</option>
+                    <option value="just_in" {% if feed_name=='just_in' %}selected{% endif %}>Just In</option>
+                </select>
+            </form>
+            <div style="max-height: 420px; overflow-y: auto; margin-top: 0.5rem;">
+                {% if news_articles %}
+                    {% for a in news_articles %}
+                    <div style="padding:0.6rem 0; border-bottom:1px solid #8b4513;">
+                        <div style="font-weight:bold;">{{ a.title }}</div>
+                        <div style="font-size:0.85rem; opacity:0.8;">{{ a.published }}</div>
+                        <div style="margin-top:0.35rem; font-size:0.95rem; opacity:0.9;">{{ a.summary|striptags }}</div>
+                        <div style="margin-top:0.4rem; display:flex; gap:0.5rem;">
+                            <a href="{{ a.link }}" target="_blank" class="go-btn" style="display:inline-block;">Open</a>
+                            <button type="button" class="go-btn use-article" data-article="{{ (a.full_text or a.summary)|striptags|e }}">Use</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div>No articles available.</div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
         <div class="container" style="flex: 2;">
             <form id="nlp-form" action="/analyze/{{ task | default('sentiment') }}" method="post">
-                <label>Choose an example:</label>
+                <label>🗺️ Choose an ancient text to explore:</label>
                 {% if task == "qa" %}
                     {% for text in example_texts[:5] %}
                     {% set parts = text.split('||') %}
                     <div class="example-row">
                         <div style="flex:1;">
-                            <span style="color:#e0e0e0;font-weight:bold;">Q:</span> {{ parts[0] }}<br>
-                            <span style="color:#e0e0e0;font-weight:bold;">Context:</span> <span style="color:#e0e0e0;">{{ parts[1] }}</span>
+                            <span style="color:#f4e4bc;font-weight:bold;text-shadow:1px 1px 2px rgba(0,0,0,0.5);">Q:</span> {{ parts[0] }}<br>
+                            <span style="color:#f4e4bc;font-weight:bold;text-shadow:1px 1px 2px rgba(0,0,0,0.5);">Context:</span> <span style="color:#f4e4bc;">{{ parts[1] }}</span>
                         </div>
                         <button type="button" class="go-btn" data-question="{{ parts[0]|e }}" data-context="{{ parts[1]|e }}">Go</button>
                     </div>
                     {% endfor %}
-                    <label>Or enter your own:</label><br>
+                    <label>📜 Or transcribe your own ancient text:</label><br>
                     <label>Question:</label>
-                    <textarea name="text" id="user-text" rows="2" cols="50" placeholder="Enter your question..."></textarea>
+                    <textarea name="text" id="user-text" rows="2" cols="50" placeholder="Ask the oracle your question..."></textarea>
                     <label>Context:</label>
-                    <textarea name="context" id="user-context" rows="4" cols="50" placeholder="Enter the context to search for the answer..."></textarea>
+                    <textarea name="context" id="user-context" rows="4" cols="50" placeholder="Provide the ancient text for the oracle to consult..."></textarea>
                     <button type="submit" class="go-btn">Go</button>
                 {% elif task == "summarize" %}
                     {% for text in example_texts[:5] %}
                     <div class="example-row" style="align-items: flex-start;">
-                        <div style="flex:1; max-height: 120px; overflow-y: auto; background: #191919; color: #eeeeee; border-radius: 6px; padding: 0.7rem; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <div style="flex:1; max-height: 120px; overflow-y: auto; background: rgba(101, 67, 33, 0.8); color: #f4e4bc; border-radius: 8px; padding: 0.8rem; margin-bottom: 0.5rem; font-size: 1rem; border: 1px solid #8b4513; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
                             {{ text }}
                         </div>
                         <button type="button" class="go-btn" data-summary="{{ text|e }}">Go</button>
                     </div>
                     {% endfor %}
-                     <label>Or enter your own text:</label><br>
-                    <textarea name="text" id="user-text" rows="6" cols="50"></textarea>
+                     <label>📜 Or transcribe your own ancient text:</label><br>
+                    <textarea name="text" id="user-text" rows="6" cols="50" placeholder="Enter your archaeological findings..."></textarea>
                     <button type="submit" class="go-btn">Go</button>
                 {% else %}
                     {% for text in example_texts[:10] %}
@@ -137,8 +194,8 @@
                         <button type="button" class="go-btn" onclick="submitExample(this)">Go</button>
                     </div>
                     {% endfor %}
-                    <label>Or enter your own text:</label><br>
-                    <textarea name="text" id="user-text" rows="4" cols="50"></textarea>
+                    <label>📜 Or transcribe your own ancient text:</label><br>
+                    <textarea name="text" id="user-text" rows="4" cols="50" placeholder="Enter your archaeological findings..."></textarea>
                     <button type="submit" class="go-btn">Go</button>
                 {% endif %}
             </form>
@@ -180,8 +237,8 @@
             'description': 'DistilBERT distilled from BERT, fine-tuned on SQuAD.'
           }
         } %}
-        <div class="model-info-box" style="flex:1; min-width:260px; max-width:340px; background:#222222; border-radius:8px; color:#eeeeee; padding:1.5em; margin-top:0; margin-bottom:1em;">
-          <h3 style="color:#eeeeee;">Model Information</h3>
+        <div class="model-info-box" style="flex:1; min-width:260px; max-width:340px; background:rgba(44, 24, 16, 0.9); border-radius:12px; color:#f4e4bc; padding:1.5em; margin-top:0; margin-bottom:1em; border:2px solid #8b4513; box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+          <h3 style="color:#f4e4bc; text-shadow:1px 1px 2px rgba(0,0,0,0.5);">Model Information</h3>
           {% set info = model_infos.get(task, {}) %}
           <div>
             <strong>{{ info.title }}</strong><br>
@@ -192,14 +249,14 @@
           </div>
         </div>
         {% set blurbs = {
-          'sentiment': 'Analyzes the emotional tone and objectivity of text. Uses a dictionary-based approach that scores sentiment from -1 (very negative) to +1 (very positive) and subjectivity from 0 (factual) to 1 (opinionated). Handles word combinations, negations, and intensifiers through rule-based processing. This method is fast and interpretable, making it ideal for real-time applications and when you need to understand why a particular score was assigned.',
-          'ner': 'Identifies and categorizes named entities in text such as people, organizations, locations, dates, and more. Uses spaCy\'s neural network model that has been trained on millions of documents to recognize entity patterns. The system can distinguish between different types of entities (like "Apple" the company vs "apple" the fruit) based on context. Outputs precise character positions for each entity found, making it easy to highlight or extract specific information from large documents.',
-          'summarize': 'Creates concise summaries of longer text while preserving key information and meaning. Uses Google\'s T5 (Text-to-Text Transfer Transformer) model that has been pre-trained on a massive dataset of text pairs. The model reads the full text, understands the main points, and generates a new summary that captures the essential information. This is different from simple extraction - it can rephrase and combine information to create more coherent summaries. Particularly effective for news articles, research papers, and long-form content.',
-          'emotion': 'Classifies text into specific emotional categories like joy, sadness, anger, fear, surprise, and disgust. Uses a specialized version of BERT (Bidirectional Encoder Representations from Transformers) that has been fine-tuned on emotion-labeled datasets. The model analyzes word patterns and context to determine the emotional state expressed in the text. Returns both the most likely emotion and confidence scores for all possible emotions, providing insight into the emotional complexity of the text. Useful for understanding customer feedback, social media sentiment, and emotional content analysis.',
-          'qa': 'Answers questions by finding relevant information within a provided context or document. Uses a question-answering model trained on Stanford\'s SQuAD dataset, which contains thousands of question-answer pairs from Wikipedia articles. The system works by understanding both the question and the context, then identifying the specific text span that answers the question. Unlike search engines that return entire documents, this extracts the exact answer from the text. The model can handle various question types including who, what, when, where, and how questions, making it useful for document analysis, customer support, and information retrieval systems.'
+          'sentiment': 'Reveals the ancient text\'s aura - blessed knowledge or cursed warnings. Measures from blessed (+1) to cursed (-1) and from factual wisdom to personal legend.',
+          'ner': 'Illuminates treasures hidden in your texts - ancient kings, lost cities, sacred artifacts. Uses neural networks to identify and mark each discovery precisely.',
+          'summarize': 'Transforms lengthy ancient texts into concise field notes. Uses the mystical T5 transformer to capture the essence of your archaeological discoveries.',
+          'emotion': 'Reveals the emotional resonance of ancient texts - fear, joy, anger, wonder. Analyzes patterns to classify the emotional legacy of your findings.',
+          'qa': 'Ask direct questions of your ancient texts and receive mystical answers. Extracts precise information from the text, perfect for uncovering specific details.'
         } %}
-        <div class="blurb-box" style="flex:1; min-width:260px; max-width:340px; background:#1a1a1a; border-radius:8px; color:#e0e0e0; padding:1.2em; border:1px solid #333333;">
-          <h3 style="color:#eeeeee; margin-top:0;">What this does</h3>
+        <div class="blurb-box" style="flex:1; min-width:260px; max-width:340px; background:rgba(44, 24, 16, 0.9); border-radius:12px; color:#f4e4bc; padding:1.2em; border:2px solid #8b4513; box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+          <h3 style="color:#f4e4bc; text-shadow:1px 1px 2px rgba(0,0,0,0.5); margin-top:0;">What this does</h3>
           <div style="font-size:0.95rem; line-height:1.5;">{{ blurbs.get(task, '') }}</div>
         </div>
     </div>
@@ -219,6 +276,17 @@
         }
         form.submit();
     }
+    // Use article buttons populate textarea
+    document.querySelectorAll('.use-article').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var text = btn.getAttribute('data-article') || '';
+            var textarea = document.getElementById('user-text');
+            if (textarea) {
+                textarea.value = text;
+                textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    });
     // Add event listeners for QA Go buttons
     document.querySelectorAll('.go-btn[data-question]').forEach(function(btn) {
         btn.addEventListener('click', function() {
