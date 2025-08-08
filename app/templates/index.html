@@ -143,7 +143,7 @@
                 {% endif %}
             </form>
         </div>
-         {% set model_infos = {
+        {% set model_infos = {
           'sentiment': {
             'title': 'Sentiment (TextBlob)',
             'model': 'TextBlob (PatternAnalyzer)',
@@ -180,7 +180,7 @@
             'description': 'DistilBERT distilled from BERT, fine-tuned on SQuAD.'
           }
         } %}
-        <div class="model-info-box" style="flex:1; min-width:260px; max-width:340px; background:#222222; border-radius:8px; color:#eeeeee; padding:1.5em; margin-top:0; margin-bottom:2em;">
+        <div class="model-info-box" style="flex:1; min-width:260px; max-width:340px; background:#222222; border-radius:8px; color:#eeeeee; padding:1.5em; margin-top:0; margin-bottom:1em;">
           <h3 style="color:#eeeeee;">Model Information</h3>
           {% set info = model_infos.get(task, {}) %}
           <div>
@@ -190,6 +190,17 @@
             <b>Used by:</b> {{ info.used_by }}<br>
             <b>Description:</b> {{ info.description }}
           </div>
+        </div>
+        {% set blurbs = {
+          'sentiment': 'Analyzes the emotional tone and objectivity of text. Uses a dictionary-based approach that scores sentiment from -1 (very negative) to +1 (very positive) and subjectivity from 0 (factual) to 1 (opinionated). Handles word combinations, negations, and intensifiers through rule-based processing. This method is fast and interpretable, making it ideal for real-time applications and when you need to understand why a particular score was assigned.',
+          'ner': 'Identifies and categorizes named entities in text such as people, organizations, locations, dates, and more. Uses spaCy\'s neural network model that has been trained on millions of documents to recognize entity patterns. The system can distinguish between different types of entities (like "Apple" the company vs "apple" the fruit) based on context. Outputs precise character positions for each entity found, making it easy to highlight or extract specific information from large documents.',
+          'summarize': 'Creates concise summaries of longer text while preserving key information and meaning. Uses Google\'s T5 (Text-to-Text Transfer Transformer) model that has been pre-trained on a massive dataset of text pairs. The model reads the full text, understands the main points, and generates a new summary that captures the essential information. This is different from simple extraction - it can rephrase and combine information to create more coherent summaries. Particularly effective for news articles, research papers, and long-form content.',
+          'emotion': 'Classifies text into specific emotional categories like joy, sadness, anger, fear, surprise, and disgust. Uses a specialized version of BERT (Bidirectional Encoder Representations from Transformers) that has been fine-tuned on emotion-labeled datasets. The model analyzes word patterns and context to determine the emotional state expressed in the text. Returns both the most likely emotion and confidence scores for all possible emotions, providing insight into the emotional complexity of the text. Useful for understanding customer feedback, social media sentiment, and emotional content analysis.',
+          'qa': 'Answers questions by finding relevant information within a provided context or document. Uses a question-answering model trained on Stanford\'s SQuAD dataset, which contains thousands of question-answer pairs from Wikipedia articles. The system works by understanding both the question and the context, then identifying the specific text span that answers the question. Unlike search engines that return entire documents, this extracts the exact answer from the text. The model can handle various question types including who, what, when, where, and how questions, making it useful for document analysis, customer support, and information retrieval systems.'
+        } %}
+        <div class="blurb-box" style="flex:1; min-width:260px; max-width:340px; background:#1a1a1a; border-radius:8px; color:#e0e0e0; padding:1.2em; border:1px solid #333333;">
+          <h3 style="color:#eeeeee; margin-top:0;">What this does</h3>
+          <div style="font-size:0.95rem; line-height:1.5;">{{ blurbs.get(task, '') }}</div>
         </div>
     </div>
     <script>
