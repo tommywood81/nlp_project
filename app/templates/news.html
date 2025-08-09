@@ -12,6 +12,7 @@
     a:hover { text-decoration: underline; }
     .article { padding: 0.8rem 0; border-bottom: 1px solid #333; }
     .meta { color: #aaa; font-size: 0.9rem; }
+    .actions a { display:inline-block; margin-right:0.5rem; background:#e0e0e0; color:#111; padding:0.2rem 0.5rem; border-radius:6px; }
     .back { display:inline-block; margin-top:1rem; background:#eee; color:#111; padding:0.4rem 0.8rem; border-radius:6px; }
   </style>
 </head>
@@ -36,12 +37,19 @@
           <div><a href="{{ a.link }}" target="_blank">{{ a.title }}</a></div>
           <div class="meta">{{ a.published }}</div>
           <div style="margin-top:0.4rem;">{{ a.summary|safe }}</div>
+          <div class="actions" style="margin-top:0.4rem;">
+            <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=sentiment">Run Sentiment</a>
+            <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=ner">Run NER</a>
+            <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=summarize">Run Summarise</a>
+            <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=emotion">Run Emotion</a>
+            <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=sentiment,ner,summarize,emotion">Run Full Pipeline</a>
+          </div>
         </div>
       {% endfor %}
     {% else %}
       <div>No articles available.</div>
     {% endif %}
-    <a class="back" href="/">Back to Dashboard</a>
+    <a class="back" href="/home">Back to Landing</a>
   </div>
 </body>
 </html>

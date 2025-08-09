@@ -106,13 +106,6 @@
     <div class="header">
         <h1>The Linguistic Expedition</h1>
         <p style="margin: 0.5rem 0 0 0; font-style: italic; font-size: 1.1rem;">Uncover the secrets hidden in ancient texts</p>
-        <div style="margin-top:0.5rem; font-size:0.95rem;">
-            <a href="/news/browse" style="color:#f4e4bc; text-decoration:underline; margin-right:1rem;">News Browser</a>
-            <a href="/?task={{ task }}&use_news=1" style="color:#f4e4bc; text-decoration:underline; margin-right:1rem;">Use ABC News Feed</a>
-            {% if use_news %}
-            <a href="/?task={{ task }}&use_news=0" style="color:#f4e4bc; text-decoration:underline;">Disable News Feed</a>
-            {% endif %}
-        </div>
     </div>
     <div class="task-bar">
         <a href="/?task=sentiment" class="task-btn{% if task == 'sentiment' %} active{% endif %}">Sentiment</a>
@@ -303,5 +296,5 @@
         });
     });
     </script>
-</body>
-</html>
+    </body>
+    </html>

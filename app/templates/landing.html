@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Text & News Intelligence Dashboard</title>
+  <style>
+    body { background:#0f0f0f; color:#eee; font-family:Segoe UI, Arial, sans-serif; margin:0; }
+    .header { background:#1a1a1a; padding:2rem; text-align:center; border-bottom:1px solid #2a2a2a; }
+    .header h1 { margin:0; font-size:2rem; }
+    .header p { margin:0.5rem 0 0 0; opacity:0.85; }
+    .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+    .cards { display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center; }
+    .card { flex:1; min-width:300px; background:#151515; border:1px solid #2a2a2a; border-radius:12px; padding:1.5rem; box-shadow:0 8px 24px rgba(0,0,0,0.3); }
+    .card h2 { margin-top:0; }
+    .card p { opacity:0.9; }
+    .cta { display:inline-block; margin-top:0.8rem; background:#e0e0e0; color:#111; padding:0.6rem 1.2rem; border-radius:8px; text-decoration:none; font-weight:600; }
+    .cta:hover { background:#fff; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Text & News Intelligence Dashboard</h1>
+    <p>Choose your source — your own text or live Australian news — and run advanced NLP analysis.</p>
+  </div>
+  <div class="container">
+    <div class="cards">
+      <div class="card">
+        <h2>✏️ Analyse Your Own Text</h2>
+        <p>Paste or type text and explore Sentiment, NER, Summarisation, Emotion, or QA individually.</p>
+        <a class="cta" href="/?task=sentiment">Start Text Analysis →</a>
+      </div>
+      <div class="card">
+        <h2>📰 Analyse Live ABC News</h2>
+        <p>Browse the latest ABC News headlines and run them through any NLP tool — or the full analysis pipeline.</p>
+        <a class="cta" href="/news/browse">Explore News →</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
