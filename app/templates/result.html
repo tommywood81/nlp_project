@@ -2,154 +2,43 @@
 <html>
 <head>
     <title>Result</title>
+    <link rel="stylesheet" href="/static/style.css">
     <style>
-        body {
-            background: linear-gradient(135deg, #2c1810 0%, #8b4513 50%, #d2691e 100%);
-            color: #f4e4bc;
-            font-family: 'Georgia', 'Times New Roman', serif;
-            margin: 0;
-            padding: 0;
-            background-attachment: fixed;
-        }
-        .container {
-            max-width: 500px;
-            margin: 3rem auto;
-            background: rgba(44, 24, 16, 0.9);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-            border: 2px solid #8b4513;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-        h2 {
-            color: #f4e4bc;
-            margin-bottom: 2rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            font-size: 1.8rem;
-        }
-        .sentiment-label {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            padding: 0.5rem 1.5rem;
-            border-radius: 6px;
-            display: inline-block;
-        }
-        .positive { background: linear-gradient(45deg, #32cd32, #228b22); color: #f4e4bc; border: 2px solid #006400; }
-        .negative { background: linear-gradient(45deg, #8b0000, #dc143c); color: #f4e4bc; border: 2px solid #800000; }
-        .neutral { background: linear-gradient(45deg, #696969, #808080); color: #f4e4bc; border: 2px solid #2f4f4f; }
-        .info {
-            color: #f4e4bc;
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        }
-        .back-btn {
-            background: linear-gradient(45deg, #cd853f, #daa520);
-            color: #2c1810;
-            border: 2px solid #8b4513;
-            border-radius: 8px;
-            padding: 0.6rem 1.4rem;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
-        }
-        .back-btn:hover {
-            background: linear-gradient(45deg, #daa520, #ffd700);
-            transform: translateY(-1px);
-            box-shadow: 0 5px 12px rgba(0,0,0,0.4);
-        }
-        pre {
-            background: rgba(101, 67, 33, 0.8);
-            color: #f4e4bc;
-            border: 2px solid #8b4513;
-            font-size: 1rem;
-            text-align: left;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-        }
+        /* retain minimal overrides for sentiment badges */
+        .sentiment-label { font-size: 1.25rem; font-weight: bold; margin-bottom: 1rem; padding: 0.5rem 1rem; border-radius: 6px; display: inline-block; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>🏛️ Analysis Result - {{ task|capitalize }}</h2>
-        {% if task == "sentiment" %}
-            <div class="sentiment-label {{ result.sentiment }}">
-                {{ result.sentiment|capitalize }}
-            </div>
-            <div class="info">
-                Polarity: {{ result.polarity }}<br>
-                Subjectivity: {{ result.subjectivity }}
-            </div>
-        {% else %}
-            <pre>{{ result }}</pre>
-        {% endif %}
-        <a href="/" class="back-btn">Back</a>
-    </div>
-    {% set blurbs = {
-      'sentiment': 'Reveals the ancient text\'s aura - blessed knowledge or cursed warnings. Measures from blessed (+1) to cursed (-1) and from factual wisdom to personal legend.',
-      'ner': 'Illuminates treasures hidden in your texts - ancient kings, lost cities, sacred artifacts. Uses neural networks to identify and mark each discovery precisely.',
-      'summarize': 'Transforms lengthy ancient texts into concise field notes. Uses the mystical T5 transformer to capture the essence of your archaeological discoveries.',
-      'emotion': 'Reveals the emotional resonance of ancient texts - fear, joy, anger, wonder. Analyzes patterns to classify the emotional legacy of your findings.',
-      'qa': 'Ask direct questions of your ancient texts and receive mystical answers. Extracts precise information from the text, perfect for uncovering specific details.'
-    } %}
-    <div class="blurb-box" style="margin-top:1em;padding:1em;background:rgba(44, 24, 16, 0.9);border-radius:12px;color:#f4e4bc;border:2px solid #8b4513;max-width:700px;margin-left:auto;margin-right:auto;box-shadow:0 8px 32px rgba(0,0,0,0.4);">
-      <h3 style="color:#f4e4bc;text-shadow:1px 1px 2px rgba(0,0,0,0.5);margin-top:0;">What this does</h3>
-      <div style="font-size:0.95rem; line-height:1.5;">{{ blurbs.get(task, '') }}</div>
-    </div>
-    {% set model_infos = {
-      'sentiment': {
-        'title': 'Sentiment (TextBlob)',
-        'model': 'TextBlob (PatternAnalyzer)',
-        'accuracy': '~60-70% on movie reviews (not SOTA, but fast and simple)',
-        'used_by': 'Prototyping, education, quick sentiment checks',
-        'description': 'Rule-based, lexicon-driven sentiment analysis.'
-      },
-      'ner': {
-        'title': 'NER (spaCy en_core_web_sm)',
-        'model': 'spaCy en_core_web_sm',
-        'accuracy': '~85% F-score (CoNLL-2003 NER)',
-        'used_by': 'Explosion AI, research, industry demos',
-        'description': 'Lightweight English NER, POS, and dependency parser.'
-      },
-      'summarize': {
-        'title': 'Summarize (t5-small)',
-        'model': 'HuggingFace t5-small',
-        'accuracy': 'ROUGE-2 F1 ~18-20 (CNN/DailyMail)',
-        'used_by': 'Research, demos, low-resource summarization',
-        'description': 'Transformer-based, pre-trained for text-to-text tasks.'
-      },
-      'emotion': {
-        'title': 'Emotion (distilbert-base-uncased-emotion)',
-        'model': 'bhadresh-savani/distilbert-base-uncased-emotion',
-        'accuracy': '~91% (GoEmotions dataset)',
-        'used_by': 'Emotion detection demos, chatbots',
-        'description': 'DistilBERT fine-tuned for emotion classification.'
-      },
-      'qa': {
-        'title': 'QA (distilbert-base-cased-distilled-squad)',
-        'model': 'distilbert/distilbert-base-cased-distilled-squad',
-        'accuracy': 'EM: 79.1, F1: 86.9 (SQuAD v1.1)',
-        'used_by': 'Lightweight QA demos, education',
-        'description': 'DistilBERT distilled from BERT, fine-tuned on SQuAD.'
-      }
-    } %}
+  <div class="container">
+    <h1>Analysis Results ({{ task|capitalize }})</h1>
 
-    <div class="model-info-box" style="margin-top:2em;padding:1em;background:rgba(44, 24, 16, 0.9);border-radius:12px;color:#f4e4bc;max-width:700px;margin-left:auto;margin-right:auto;border:2px solid #8b4513;box-shadow:0 8px 32px rgba(0,0,0,0.4);">
-      <h3 style="color:#f4e4bc;text-shadow:1px 1px 2px rgba(0,0,0,0.5);">Model Information</h3>
-      {% set info = model_infos.get(task, {}) %}
-      <div>
-        <strong>{{ info.title }}</strong><br>
-        <b>Model:</b> {{ info.model }}<br>
-        <b>Accuracy:</b> {{ info.accuracy }}<br>
-        <b>Used by:</b> {{ info.used_by }}<br>
-        <b>Description:</b> {{ info.description }}
+    <div class="results">
+      {% if task == "sentiment" %}
+          <div class="sentiment-label {{ result.sentiment }}">
+              {{ result.sentiment|capitalize }}
+          </div>
+          <div>
+              Polarity: {{ result.polarity }} | Subjectivity: {{ result.subjectivity }}
+          </div>
+      {% else %}
+          <pre style="white-space: pre-wrap; word-break: break-word;">{{ result }}</pre>
+      {% endif %}
+      <div style="margin-top:1rem;">
+        <a class="button-secondary" href="/">Back</a>
       </div>
     </div>
+
+    <div class="explanation-card">
+      <h2>What’s Happening</h2>
+      {% set blurbs = {
+        'sentiment': 'This tool estimates tone and objectivity. The polarity score ranges from -1 (negative) to +1 (positive). Subjectivity indicates factual (0) vs opinionated (1).',
+        'ner': 'This model identifies named entities (people, places, organisations, dates). Tokens are tagged and spans are returned with labels for easy extraction.',
+        'summarize': 'The summariser condenses text into a shorter version while preserving key information. It may rephrase or select salient parts.',
+        'emotion': 'Emotion detection maps the text to emotions such as joy, anger, sadness, fear, or surprise. Scores reflect likelihoods per class.',
+        'qa': 'The QA model finds the most relevant span of the provided context that answers the question, returning the best match.'
+      } %}
+      <p>{{ blurbs.get(task, '') }}</p>
+    </div>
+  </div>
 </body>
 </html>

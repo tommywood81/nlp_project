@@ -1,30 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ABC News - The Linguistic Expedition</title>
-  <style>
-    body { background: #111; color: #eee; font-family: Georgia, 'Times New Roman', serif; margin:0; padding:0; }
-    .header { background: #222; color: #eee; padding: 1rem 2rem; border-bottom: 1px solid #333; }
-    .container { max-width: 900px; margin: 2rem auto; background: #1a1a1a; padding: 1.5rem; border-radius: 10px; }
-    .feed-form { margin-bottom: 1rem; }
-    select { background:#111; color:#eee; border:1px solid #444; padding:0.4rem; border-radius: 6px; }
-    a { color: #ddd; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .article { padding: 0.8rem 0; border-bottom: 1px solid #333; }
-    .meta { color: #aaa; font-size: 0.9rem; }
-    .actions a { display:inline-block; margin-right:0.5rem; background:#e0e0e0; color:#111; padding:0.2rem 0.5rem; border-radius:6px; }
-    .back { display:inline-block; margin-top:1rem; background:#eee; color:#111; padding:0.4rem 0.8rem; border-radius:6px; }
-  </style>
+  <title>ABC News Analysis</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <div class="header">
-    <h1 style="margin:0;">The Linguistic Expedition</h1>
-    <div style="opacity:0.8;">Uncover the secrets hidden in ancient texts</div>
-  </div>
-  <div class="container">
-    <form class="feed-form" method="get" action="/news/browse">
-      <label>Select ABC feed:</label>
-      <select name="feed_name" onchange="this.form.submit()">
+  <header class="page-header">
+    <div class="container">
+      <h1>ABC News Analysis</h1>
+      <p class="subtitle">Select a category, browse headlines, and run analyses.</p>
+    </div>
+  </header>
+
+  <section class="container">
+    <form class="analysis-form" method="get" action="/news/browse">
+      <label for="feed">Select ABC feed</label>
+      <select id="feed" name="feed_name" onchange="this.form.submit()">
         <option value="top_stories" {% if feed_name=='top_stories' %}selected{% endif %}>Top Stories</option>
         <option value="australia" {% if feed_name=='australia' %}selected{% endif %}>Australia</option>
         <option value="just_in" {% if feed_name=='just_in' %}selected{% endif %}>Just In</option>
@@ -32,24 +23,30 @@
     </form>
 
     {% if articles %}
-      {% for a in articles %}
-        <div class="article">
-          <div><a href="{{ a.link }}" target="_blank">{{ a.title }}</a></div>
-          <div class="meta">{{ a.published }}</div>
-          <div style="margin-top:0.4rem;">{{ a.summary|safe }}</div>
-          <div class="actions" style="margin-top:0.4rem;">
-            <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=sentiment">Run Sentiment</a>
-            <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=ner">Run NER</a>
-            <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=summarize">Run Summarise</a>
-            <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=emotion">Run Emotion</a>
-            <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=sentiment,ner,summarize,emotion">Run Full Pipeline</a>
+      <div class="results-section">
+        {% for a in articles %}
+          <div class="article-block">
+            <h3 style="margin:0;">{{ a.title }}</h3>
+            <p class="meta" style="opacity:0.7; margin:0.25rem 0 0.5rem 0;">{{ a.published }}</p>
+            <div>{{ a.summary|safe }}</div>
+            <div style="margin-top:0.6rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <a href="{{ a.link }}" target="_blank" class="button-secondary">Read Article</a>
+              <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=sentiment" class="button-primary">Run Sentiment</a>
+              <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=ner" class="button-primary">Run NER</a>
+              <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=summarize" class="button-primary">Run Summarise</a>
+              <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=emotion" class="button-primary">Run Emotion</a>
+              <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=sentiment,ner,summarize,emotion" class="button-secondary">Run Full Pipeline</a>
+            </div>
           </div>
-        </div>
-      {% endfor %}
+        {% endfor %}
+      </div>
     {% else %}
-      <div>No articles available.</div>
+      <div class="results">No articles available.</div>
     {% endif %}
-    <a class="back" href="/home">Back to Landing</a>
-  </div>
+
+    <div style="text-align:center; margin-top:1rem;">
+      <a href="/home" class="button-secondary">Back to Landing</a>
+    </div>
+  </section>
 </body>
 </html>

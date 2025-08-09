@@ -1,0 +1,772 @@
+Here’s the full HTML, CSS, and “What’s Happening” content for making your NLP dashboard look like a cohesive, professional SaaS app.
+
+It includes:
+
+Consistent structure for every results page
+
+Explanations for each tool
+
+CSS styling for the “What’s Happening” box
+
+Example layout that you can reuse for all five NLP tools and the RSS analysis
+
+HTML Structure for Results Pages
+
+
+(Replace the {{...}} placeholders with your actual results or variables)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{page_title}}</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+<!-- Page Heading -->
+<h1>{{page_title}}</h1>
+
+<!-- Results Section -->
+<div class="results">
+{{results_html}}
+</div>
+
+<!-- Explanation Section -->
+<div class="explanation-card">
+<h2>What’s Happening</h2>
+<p>
+{{explanation_text}}
+</p>
+</div>
+
+<!-- Next Step Navigation -->
+<div class="next-step">
+<a href="{{next_page_url}}" class="button-primary">
+{{next_step_text}} →
+</a>
+</div>
+
+</div>
+
+</body>
+</html>
+
+CSS (style.css)
+body {
+font-family: 'Inter', sans-serif;
+margin: 0;
+padding: 0;
+background: #f9fafb;
+color: #111827;
+}
+
+.container {
+max-width: 900px;
+margin: auto;
+padding: 2rem;
+}
+
+h1 {
+font-size: 2rem;
+margin-bottom: 1rem;
+}
+
+.results {
+background: white;
+padding: 1.5rem;
+border-radius: 8px;
+box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.explanation-card {
+background: #EFF6FF; /* light blue */
+border-left: 4px solid #2563EB;
+padding: 1rem 1.5rem;
+margin-top: 2rem;
+border-radius: 6px;
+}
+
+.explanation-card h2 {
+margin-top: 0;
+font-size: 1.25rem;
+color: #1E3A8A;
+}
+
+.explanation-card p {
+margin: 0;
+line-height: 1.5;
+}
+
+.next-step {
+margin-top: 2rem;
+text-align: right;
+}
+
+.button-primary {
+display: inline-block;
+background: #2563EB;
+color: white;
+padding: 0.75rem 1.5rem;
+border-radius: 6px;
+text-decoration: none;
+font-weight: 500;
+}
+
+.button-primary:hover {
+background: #1E40AF;
+}
+“What’s Happening” Explanations for Each Tool
+Sentiment Analysis
+
+This tool uses a transformer model fine-tuned on sentiment-labelled datasets. Your text is split into tokens, passed through the model, and classified as positive, neutral, or negative based on output probabilities. The confidence score reflects how certain the model is about its prediction.
+Named Entity Recognition (NER)
+
+This model identifies and classifies entities like people, locations, organisations, dates, and more. It works by tagging each token in your text according to patterns it learned during training. The output shows the entity text, its type, and the model’s confidence.
+Summarisation
+
+This is an extractive/abstractive summariser that condenses your text while retaining key meaning. It processes the input to understand context and then generates a shorter version by either selecting important sentences (extractive) or rephrasing them (abstractive).
+Emotion Detection
+
+This classifier predicts emotional tones in your text — such as joy, anger, sadness, fear, or surprise — by mapping word patterns to emotion labels learned from annotated datasets. Scores reflect the likelihood of each emotion being present.
+Question Answering
+
+This model searches the provided text for the most relevant answer to your question. It encodes both the question and the text, locates the likely answer span, and returns it along with a confidence score.
+Example for Sentiment Page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentiment Analysis</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>Sentiment Analysis Results</h1>
+
+<div class="results">
+<!-- Example results -->
+<p><strong>Prediction:</strong> Positive</p>
+<p><strong>Confidence:</strong> 94%</p>
+</div>
+
+<div class="explanation-card">
+<h2>What’s Happening</h2>
+<p>
+This tool uses a transformer model fine-tuned on sentiment-labelled datasets. Your text is split into tokens, passed through the model, and classified as positive, neutral, or negative based on output probabilities. The confidence score reflects how certain the model is about its prediction.
+</p>
+</div>
+
+<div class="next-step">
+<a href="/ner" class="button-primary">Try Named Entity Recognition →</a>
+</div>
+
+</div>
+
+</body>
+</html>
+How to Use This for All Pages
+Save the CSS above in /static/style.css.
+
+Make each NLP tool’s result page follow the same HTML structure.
+
+Swap in the relevant {{page_title}}, {{results_html}}, and {{explanation_text}}.
+
+Add the next step button to guide users through your tools in a logical order.
+
+For the RSS analysis, use the same structure so it looks like part of the same product.
+
+If you follow this, your dashboard will have:
+
+Clean SaaS-style consistency
+
+Professional spacing & typography
+
+Educational explanations for credibility
+
+Smooth navigation flow between tools
+
+here’s a matching SaaS-style landing page for your NLP dashboard, designed so it feels like the professional “front door” to the whole product.
+
+It follows the same visual style as the result pages I gave you before, so it looks cohesive.
+
+Landing Page HTML (index.html)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NLP Analysis Dashboard</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="hero">
+<div class="container">
+<h1>AI Text Analysis Toolkit</h1>
+<p class="hero-subtitle">
+Analyse text or news articles with five advanced NLP techniques — all in one place.
+</p>
+<a href="#tools" class="button-primary">Get Started</a>
+</div>
+</header>
+
+<section id="tools" class="container">
+<h2>Choose Your Starting Point</h2>
+<div class="card-grid">
+
+<!-- Analyse Your Own Text -->
+<div class="card">
+<h3>Analyse Your Own Text</h3>
+<p>
+Paste in your own text and explore five different NLP tools — Sentiment, Named Entity Recognition, Summarisation, Emotion Detection, and Question Answering.
+</p>
+<a href="/analyse" class="button-secondary">Start Now</a>
+</div>
+
+<!-- Analyse ABC News -->
+<div class="card">
+<h3>Analyse ABC News</h3>
+<p>
+Pull in the latest headlines from ABC News Australia and run them through any single NLP tool or a full analysis pipeline.
+</p>
+<a href="/abc-news" class="button-secondary">Start Now</a>
+</div>
+
+</div>
+</section>
+
+<section class="container">
+<h2>How It Works</h2>
+<div class="how-it-works">
+<p>
+This dashboard connects powerful Natural Language Processing models to a simple, intuitive interface.
+Whether you’re analysing your own writing or news from the ABC RSS feed, our tools break down the text into actionable insights.
+</p>
+<ul>
+<li><strong>Sentiment Analysis:</strong> Detect the tone of the text.</li>
+<li><strong>Named Entity Recognition:</strong> Identify people, places, and organisations.</li>
+<li><strong>Summarisation:</strong> Get the key points in a fraction of the words.</li>
+<li><strong>Emotion Detection:</strong> Find the emotional undertones.</li>
+<li><strong>Question Answering:</strong> Ask direct questions and get precise answers.</li>
+</ul>
+</div>
+</section>
+
+<footer class="footer">
+<p>&copy; {{current_year}} AI Text Analysis Toolkit. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
+Additional CSS (add to style.css)
+/* Hero Section */
+.hero {
+background: linear-gradient(135deg, #2563EB, #1E3A8A);
+color: white;
+padding: 4rem 0;
+text-align: center;
+}
+
+.hero h1 {
+font-size: 2.5rem;
+margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+font-size: 1.25rem;
+margin-bottom: 2rem;
+color: #E0E7FF;
+}
+
+/* Cards */
+.card-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+gap: 1.5rem;
+margin-top: 2rem;
+}
+
+.card {
+background: white;
+padding: 1.5rem;
+border-radius: 8px;
+box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+margin-top: 0;
+}
+
+.button-secondary {
+display: inline-block;
+background: #F3F4F6;
+color: #111827;
+padding: 0.5rem 1rem;
+border-radius: 6px;
+text-decoration: none;
+font-weight: 500;
+margin-top: 1rem;
+}
+
+.button-secondary:hover {
+background: #E5E7EB;
+}
+
+/* How it works section */
+.how-it-works ul {
+margin-top: 1rem;
+padding-left: 1.5rem;
+}
+
+.how-it-works li {
+margin-bottom: 0.5rem;
+}
+
+/* Footer */
+.footer {
+background: #F9FAFB;
+padding: 1rem;
+text-align: center;
+font-size: 0.875rem;
+color: #6B7280;
+margin-top: 3rem;
+}
+How It Fits the Rest of the App
+This landing page sits at / (or /index.html) and is the first thing users see.
+
+Two clear entry points:
+
+Analyse Your Own Text → goes to /analyse (page where they can paste text and choose the tool).
+
+Analyse ABC News → goes to /abc-news (page with your RSS feed + tool selection).
+
+It matches the typography, buttons, and spacing of the results pages so the transition feels natural.
+
+You can add nav links at the top if you want persistent navigation between sections.
+
+— here’s a matching “Analyse Your Own Text” page that feels like part of the same professional SaaS site we’ve been building.
+
+
+
+It keeps your five NLP features but frames them in a clean, user-friendly tool selection layout, with room for your explanations on each results page.
+
+Analyse Your Own Text (analyse.html)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analyse Your Own Text</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="page-header">
+<div class="container">
+<h1>Analyse Your Own Text</h1>
+<p class="subtitle">
+Paste in your text and choose one of our NLP tools — or run the full pipeline for deeper insight.
+</p>
+</div>
+</header>
+
+<section class="container">
+<form action="/process-text" method="post" class="analysis-form">
+<label for="userText">Your Text</label>
+<textarea id="userText" name="userText" rows="8" placeholder="Paste or type your text here..." required></textarea>
+
+<h2>Select Analysis Method</h2>
+<div class="tool-options">
+<label>
+<input type="radio" name="analysisType" value="sentiment" required>
+Sentiment Analysis
+</label>
+<label>
+<input type="radio" name="analysisType" value="ner">
+Named Entity Recognition
+</label>
+<label>
+<input type="radio" name="analysisType" value="summarise">
+Summarisation
+</label>
+<label>
+<input type="radio" name="analysisType" value="emotion">
+Emotion Detection
+</label>
+<label>
+<input type="radio" name="analysisType" value="qa">
+Question Answering
+</label>
+<label>
+<input type="radio" name="analysisType" value="pipeline">
+Full Analysis Pipeline
+</label>
+</div>
+
+<button type="submit" class="button-primary">Run Analysis</button>
+</form>
+</section>
+
+<footer class="footer">
+<p>&copy; {{current_year}} AI Text Analysis Toolkit. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
+CSS Additions for style.css
+/* Page Header */
+.page-header {
+background: #F9FAFB;
+padding: 2rem 0;
+border-bottom: 1px solid #E5E7EB;
+text-align: center;
+}
+
+.page-header h1 {
+margin-bottom: 0.5rem;
+}
+
+.subtitle {
+color: #6B7280;
+}
+
+/* Form Styles */
+.analysis-form {
+display: flex;
+flex-direction: column;
+gap: 1.5rem;
+margin-top: 2rem;
+}
+
+.analysis-form label {
+font-weight: 500;
+}
+
+.analysis-form textarea {
+width: 100%;
+padding: 1rem;
+border: 1px solid #D1D5DB;
+border-radius: 6px;
+font-size: 1rem;
+}
+
+.tool-options {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap: 0.75rem;
+}
+
+.tool-options label {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+padding: 0.75rem;
+background: #F3F4F6;
+border-radius: 6px;
+cursor: pointer;
+transition: background 0.2s;
+}
+
+.tool-options label:hover {
+background: #E5E7EB;
+}
+How It Works in the App Flow
+Landing page → /analyse
+
+User pastes text → chooses tool or Full Analysis Pipeline
+
+Submission posts to /process-text where your backend picks the right model(s)
+
+Results page shows output plus your per-tool explanation box we already designed
+
+
+
+This keeps everything:
+
+Clean
+
+Easy to navigate
+
+Professional SaaS feel
+
+Works seamlessly with your ABC News RSS analysis page
+
+— here’s the ABC News Analysis Page designed to match the landing page and “Analyse Your Own Text” page, so the whole dashboard looks like one cohesive SaaS tool.
+
+
+
+This version lets the user pick an ABC News category from the RSS feed, fetch the latest articles, and then run them through one of your five NLP tools or the full pipeline.
+
+ABC News Analysis Page (abc_news.html)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABC News Analysis</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="page-header">
+<div class="container">
+<h1>ABC News Analysis</h1>
+<p class="subtitle">
+Select an ABC News category, fetch the latest stories, and run them through our NLP tools for instant insight.
+</p>
+</div>
+</header>
+
+<section class="container">
+<form action="/process-abc-news" method="post" class="analysis-form">
+
+<label for="category">Select News Category</label>
+<select id="category" name="category" required>
+<option value="">-- Choose a category --</option>
+<option value="justin">Just In</option>
+<option value="politics">Politics</option>
+<option value="world">World</option>
+<option value="business">Business</option>
+<option value="sport">Sport</option>
+<option value="science">Science</option>
+<option value="health">Health</option>
+<option value="arts-culture">Arts & Culture</option>
+</select>
+
+<h2>Select Analysis Method</h2>
+<div class="tool-options">
+<label>
+<input type="radio" name="analysisType" value="sentiment" required>
+Sentiment Analysis
+</label>
+<label>
+<input type="radio" name="analysisType" value="ner">
+Named Entity Recognition
+</label>
+<label>
+<input type="radio" name="analysisType" value="summarise">
+Summarisation
+</label>
+<label>
+<input type="radio" name="analysisType" value="emotion">
+Emotion Detection
+</label>
+<label>
+<input type="radio" name="analysisType" value="qa">
+Question Answering
+</label>
+<label>
+<input type="radio" name="analysisType" value="pipeline">
+Full Analysis Pipeline
+</label>
+</div>
+
+<button type="submit" class="button-primary">Fetch & Analyse</button>
+</form>
+</section>
+
+<footer class="footer">
+<p>&copy; {{current_year}} AI Text Analysis Toolkit. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
+CSS Additions (style.css)
+
+
+You can reuse the exact CSS from the “Analyse Your Own Text” page — both forms share the same .analysis-form, .tool-options, and .page-header styling.
+
+The only new style is for the <select> dropdown:
+
+.analysis-form select {
+padding: 0.75rem;
+border: 1px solid #D1D5DB;
+border-radius: 6px;
+font-size: 1rem;
+background-color: white;
+}
+How It Fits Into Your App Flow
+Landing page → User chooses “Analyse ABC News”
+
+ABC News page → User picks category → Selects NLP tool → Submits
+
+Backend:
+
+Fetches category RSS feed from ABC
+
+Pulls latest articles (title + description, optionally full text)
+
+Runs chosen NLP model(s)
+
+Results page:
+
+Shows the processed articles
+
+Includes your explanation box describing what the tool is doing and how
+
+- 
+here’s your Results Page template.
+
+This works for both “Analyse Your Own Text” and “ABC News”, keeping the design consistent across the dashboard and giving users that SaaS-level polish.
+
+Results.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analysis Results</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="page-header">
+<div class="container">
+<h1>Analysis Results</h1>
+<p class="subtitle">
+Here’s what our AI found after processing your text through the <strong>{{ analysis_name }}</strong> tool.
+</p>
+</div>
+</header>
+
+<section class="container">
+<!-- Results -->
+<div class="results-section">
+{% if source_type == 'abc_news' %}
+<h2>Articles Analysed</h2>
+{% for article in articles %}
+<div class="article-block">
+<h3>{{ article.title }}</h3>
+<p><em>{{ article.published }}</em></p>
+<p>{{ article.summary }}</p>
+
+<div class="analysis-output">
+{{ article.analysis | safe }}
+</div>
+</div>
+{% endfor %}
+{% else %}
+<h2>Your Submitted Text</h2>
+<p>{{ original_text }}</p>
+
+<div class="analysis-output">
+{{ analysis_result | safe }}
+</div>
+{% endif %}
+</div>
+
+<!-- Explanation -->
+<div class="explanation-box">
+<h2>What’s Happening Here?</h2>
+<p>
+This result was generated using our <strong>{{ analysis_name }}</strong> model.
+The process works by taking your text and applying natural language processing (NLP) techniques to extract insights.
+For example:
+</p>
+<ul>
+{% if analysis_name == "Sentiment Analysis" %}
+<li>Identifies the overall tone of the text — positive, negative, or neutral — using a transformer-based classifier.</li>
+<li>Assigns a confidence score to each tone prediction.</li>
+{% elif analysis_name == "Named Entity Recognition" %}
+<li>Scans the text for named entities like people, places, and organisations.</li>
+<li>Uses token classification to label each detected entity by type.</li>
+{% elif analysis_name == "Summarisation" %}
+<li>Generates a concise summary that captures the key points of the original text.</li>
+<li>Uses an extractive or abstractive summarisation model depending on context.</li>
+{% elif analysis_name == "Emotion Detection" %}
+<li>Detects nuanced emotional states beyond simple sentiment (e.g., joy, anger, sadness).</li>
+<li>Returns an emotion profile with probability scores.</li>
+{% elif analysis_name == "Question Answering" %}
+<li>Finds the most relevant span of text to answer a provided question.</li>
+<li>Uses a context-question pairing model to generate answers.</li>
+{% elif analysis_name == "Full Analysis Pipeline" %}
+<li>Runs all five NLP tools in sequence to provide a multi-layered analysis.</li>
+{% endif %}
+</ul>
+<p>
+These results are powered by pre-trained NLP models and optimised pipelines running on our backend, ensuring fast, accurate, and reproducible outputs.
+</p>
+</div>
+
+<div class="back-link">
+<a href="/" class="button-secondary">🔙 Back to Dashboard</a>
+</div>
+</section>
+
+<footer class="footer">
+<p>&copy; {{ current_year }} AI Text Analysis Toolkit. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
+CSS Additions (style.css)
+.results-section {
+margin-bottom: 2rem;
+}
+
+.article-block {
+border: 1px solid #E5E7EB;
+border-radius: 8px;
+padding: 1rem;
+margin-bottom: 1.5rem;
+background-color: #FAFAFA;
+}
+
+.analysis-output {
+margin-top: 1rem;
+padding: 1rem;
+background-color: #FFFFFF;
+border: 1px solid #D1D5DB;
+border-radius: 6px;
+font-family: monospace;
+white-space: pre-wrap;
+}
+
+.explanation-box {
+background-color: #F3F4F6;
+border: 1px solid #E5E7EB;
+border-radius: 8px;
+padding: 1.5rem;
+margin-bottom: 2rem;
+}
+
+.explanation-box ul {
+margin: 0.5rem 0 0 1.25rem;
+}
+
+.back-link {
+text-align: center;
+}
+
+.button-secondary {
+background-color: #6B7280;
+color: white;
+padding: 0.75rem 1.25rem;
+border-radius: 6px;
+text-decoration: none;
+font-weight: bold;
+}
+
+.button-secondary:hover {
+background-color: #4B5563;
+}
+How It Works
+Dynamic explanation section changes depending on the analysis tool used.
+
+Two display modes:
+
+ABC News mode → loops through multiple articles
+
+Custom text mode → shows the submitted text and results
+
+Same styling for all result types → keeps the SaaS look
+
+Clear “What’s Happening Here?” box builds trust by explaining the process

@@ -2,36 +2,40 @@
 <html>
 <head>
   <title>News Analysis Results</title>
-  <style>
-    body { background:#0f0f0f; color:#eee; font-family:Segoe UI, Arial, sans-serif; margin:0; }
-    .header { background:#1a1a1a; padding:1rem 2rem; border-bottom:1px solid #2a2a2a; }
-    .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
-    .card { background:#151515; border:1px solid #2a2a2a; border-radius:12px; padding:1rem 1.2rem; margin-bottom:1rem; }
-    pre { white-space: pre-wrap; word-break: break-word; background:#111; padding:0.8rem; border-radius:8px; }
-    a { color:#ddd; }
-  </style>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <div class="header">
-    <h2 style="margin:0;">News Analysis Results</h2>
-  </div>
-  <div class="container">
-    <div class="card">
-      <div><strong>Title:</strong> {{ article.title }}</div>
-      <div style="opacity:0.8;">{{ article.published }}</div>
-      <div style="margin-top:0.6rem;">{{ (article.full_text or article.summary)|default('No content') }}</div>
+  <header class="page-header">
+    <div class="container">
+      <h1>News Analysis Results</h1>
+      <p class="subtitle">Outputs from selected tools for the chosen article.</p>
     </div>
+  </header>
 
-    {% for name, output in outputs.items() %}
-      <div class="card">
-        <h3 style="margin-top:0;">{{ name|capitalize }} Output</h3>
-        <pre>{{ output }}</pre>
+  <section class="container">
+    <div class="results-section">
+      <div class="article-block">
+        <h3 style="margin:0;">{{ article.title }}</h3>
+        <p style="opacity:0.7; margin:0.25rem 0 0.5rem 0;">{{ article.published }}</p>
+        <div>{{ (article.full_text or article.summary)|default('No content') }}</div>
       </div>
-    {% endfor %}
 
-    <div style="margin-top:1rem;">
-      <a href="/news/browse">← Back to News</a>
+      {% for name, output in outputs.items() %}
+        <div class="results">
+          <h2 style="margin-top:0;">{{ name|capitalize }} Output</h2>
+          <div class="analysis-output">{{ output }}</div>
+        </div>
+      {% endfor %}
     </div>
-  </div>
+
+    <div class="explanation-box">
+      <h2>What’s Happening Here?</h2>
+      <p>This page shows the outputs produced by the selected tools on the article content. Use the News page to try other tools or run the full pipeline.</p>
+    </div>
+
+    <div class="back-link">
+      <a class="button-secondary" href="/news/browse">Back to News</a>
+    </div>
+  </section>
 </body>
 </html>
