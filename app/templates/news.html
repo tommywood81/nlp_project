@@ -35,7 +35,8 @@
               <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=ner" class="button-primary">Run NER</a>
               <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=summarize" class="button-primary">Run Summarise</a>
               <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=emotion" class="button-primary">Run Emotion</a>
-              <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=sentiment,ner,summarize,emotion" class="button-secondary">Run Full Pipeline</a>
+              <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=qa&question=What%20is%20the%20main%20point%20of%20this%20article%3F" class="button-primary">Run QA</a>
+              <a href="/news/analyze?feed_name={{ feed_name }}&index={{ loop.index0 }}&tools=sentiment,ner,summarize,emotion,qa&question=What%20is%20the%20main%20point%20of%20this%20article%3F" class="button-pipeline">Run Full Pipeline</a>
             </div>
           </div>
         {% endfor %}
@@ -44,8 +45,9 @@
       <div class="results">No articles available.</div>
     {% endif %}
 
-    <div style="text-align:center; margin-top:1rem;">
-      <a href="/home" class="button-secondary">Back to Landing</a>
+    <div class="nav-buttons">
+      <a href="/home" class="button-home">🏠 Home</a>
+      <a href="/" class="button-secondary">Analyse Your Own Text</a>
     </div>
   </section>
 </body>

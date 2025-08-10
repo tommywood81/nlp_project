@@ -1,34 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Text & News Intelligence Dashboard</title>
+  <title>NLP Portfolio Dashboard</title>
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <header class="hero">
+  <section class="hero">
     <div class="container">
-      <h1>AI Text Analysis Toolkit</h1>
-      <p class="hero-subtitle">Analyse text or news articles with five advanced NLP techniques — all in one place.</p>
-      <a href="#tools" class="button-primary">Get Started</a>
+      <h1>NLP Portfolio Dashboard</h1>
+      <p class="hero-subtitle">Advanced Natural Language Processing Analysis Tools</p>
     </div>
-  </header>
-  <section id="tools" class="container">
-    <h2>Choose Your Starting Point</h2>
+  </section>
+
+  <section class="container">
     <div class="card-grid">
       <div class="card">
-        <h3>Analyse Your Own Text</h3>
-        <p>Paste in your own text and explore Sentiment, NER, Summarisation, Emotion Detection, and Question Answering.</p>
-        <a class="button-secondary" href="/?task=sentiment">Start Now</a>
+        <h2>Analyse Your Own Text</h2>
+        <p>Input any text and run it through our suite of NLP models including sentiment analysis, named entity recognition, summarization, emotion detection, and question answering.</p>
+        <a href="/" class="button-primary">Start Analysing</a>
       </div>
+      
       <div class="card">
-        <h3>Analyse ABC News</h3>
-        <p>Browse the latest ABC News headlines and run them through any single NLP tool or a full analysis pipeline.</p>
-        <a class="button-secondary" href="/news/browse">Start Now</a>
+        <h2>Analyse Live ABC News</h2>
+        <p>Browse current news articles from ABC News Australia and analyze them using our NLP pipeline. Perfect for real-world text analysis demonstrations.</p>
+        <a href="/news/browse" class="button-secondary">Browse News</a>
       </div>
     </div>
   </section>
+
   <footer class="footer">
-    <p>&copy; {{ 2025 }} AI Text Analysis Toolkit. All rights reserved.</p>
+    <div class="container">
+      <p>&copy; 2024 NLP Portfolio Dashboard. Built with FastAPI and modern NLP models.</p>
+    </div>
   </footer>
 </body>
 </html>

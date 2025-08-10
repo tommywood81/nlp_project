@@ -29,12 +29,24 @@
     </div>
 
     <div class="explanation-box">
-      <h2>What’s Happening Here?</h2>
+      <h2>What's Happening Here?</h2>
       <p>This page shows the outputs produced by the selected tools on the article content. Use the News page to try other tools or run the full pipeline.</p>
     </div>
 
-    <div class="back-link">
-      <a class="button-secondary" href="/news/browse">Back to News</a>
+    <div class="results" style="margin-top:1.5rem;">
+      <h2 style="margin-top:0;">Ask a Question (QA)</h2>
+      <form action="/analyze/qa" method="post" class="analysis-form">
+        <label for="qa-question">Your Question</label>
+        <textarea id="qa-question" name="text" rows="2" placeholder="Ask something about this article..."></textarea>
+        <input type="hidden" name="context" value="{{ (article.full_text or article.summary)|replace('"','&quot;')|e }}" />
+        <button type="submit" class="button-primary">Ask</button>
+      </form>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="/home" class="button-home">🏠 Home</a>
+      <a href="/news/browse" class="button-secondary">← Back to News</a>
+      <a href="/" class="button-secondary">Analyse Your Own Text</a>
     </div>
   </section>
 </body>

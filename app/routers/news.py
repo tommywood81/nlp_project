@@ -41,7 +41,13 @@ async def browse_news(request: Request, feed_name: str = Query("top_stories")):
 
 
 @router.get("/analyze", response_class=HTMLResponse)
-async def analyze_article(request: Request, feed_name: str = Query("top_stories"), index: int = Query(0), tools: str = Query("sentiment")):
+async def analyze_article(
+    request: Request,
+    feed_name: str = Query("top_stories"),
+    index: int = Query(0),
+    tools: str = Query("sentiment"),
+    question: str | None = Query(None),
+):
     try:
         articles = fetch_abc_feed(feed_name=feed_name, full_text=True)
         article = articles[index]
@@ -64,12 +70,16 @@ async def analyze_article(request: Request, feed_name: str = Query("top_stories"
 
     for t in tool_list:
         if t == "qa":
-            # QA needs both question and context; skip in bulk mode
+            # Handle QA after the loop so we can provide a default/fallback question
             continue
         strat = strategies.get(t)
         if strat is None:
             continue
         outputs[t] = strat.analyze(text=text)
+
+    if "qa" in tool_list:
+        qa_question = (question or "What is the main point of this article?").strip()
+        outputs["qa"] = strategies["qa"].analyze(text=qa_question, context=text)
 
     return templates.TemplateResponse(
         "news_result.html",

@@ -28,17 +28,16 @@
       </div>
     </div>
 
-    <div class="explanation-card">
-      <h2>What’s Happening</h2>
-      {% set blurbs = {
-        'sentiment': 'This tool estimates tone and objectivity. The polarity score ranges from -1 (negative) to +1 (positive). Subjectivity indicates factual (0) vs opinionated (1).',
-        'ner': 'This model identifies named entities (people, places, organisations, dates). Tokens are tagged and spans are returned with labels for easy extraction.',
-        'summarize': 'The summariser condenses text into a shorter version while preserving key information. It may rephrase or select salient parts.',
-        'emotion': 'Emotion detection maps the text to emotions such as joy, anger, sadness, fear, or surprise. Scores reflect likelihoods per class.',
-        'qa': 'The QA model finds the most relevant span of the provided context that answers the question, returning the best match.'
-      } %}
+    <div class="explanation-box">
+      <h2>What's Happening Here?</h2>
       <p>{{ blurbs.get(task, '') }}</p>
     </div>
-  </div>
+
+    <div class="nav-buttons">
+      <a href="/home" class="button-home">🏠 Home</a>
+      <a href="/" class="button-secondary">← Back to Analysis</a>
+      <a href="/news/browse" class="button-secondary">Analyse ABC News</a>
+    </div>
+  </section>
 </body>
 </html>

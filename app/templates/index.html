@@ -14,7 +14,7 @@
 
     <section class="container">
       <nav style="margin-bottom: 1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
-        <a href="/?task=sentiment" class="button-secondary{% if task == 'sentiment' %} active{% endif %}">Sentiment</a>
+        <a href="/?task=sentiment" class="button-secondary{% if task == 'sentiment' or not task %} active{% endif %}">Sentiment</a>
         <a href="/?task=ner" class="button-secondary{% if task == 'ner' %} active{% endif %}">NER</a>
         <a href="/?task=summarize" class="button-secondary{% if task == 'summarize' %} active{% endif %}">Summarise</a>
         <a href="/?task=emotion" class="button-secondary{% if task == 'emotion' %} active{% endif %}">Emotion</a>
@@ -125,8 +125,13 @@
         'qa': 'Extracts the most relevant answer span from the provided context.'
       } %}
       <div class="explanation-card" style="border-left-color:#10B981; background:#ECFDF5;">
-        <h2>What’s Happening</h2>
+        <h2>What's Happening</h2>
         <p>{{ blurbs.get(task, '') }}</p>
+      </div>
+
+      <div class="nav-buttons">
+        <a href="/home" class="button-home">🏠 Home</a>
+        <a href="/news/browse" class="button-secondary">Analyse ABC News</a>
       </div>
     </section>
 
