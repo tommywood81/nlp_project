@@ -62,4 +62,43 @@ coverage.xml
 .DS_Store
 Thumbs.db
 
-# Project-specific
+# Project-specific exclusions
+TUTORIAL.md
+notebooks/
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Environment and secrets
+.env
+.env.local
+.env.production
+*.key
+*.pem
+id_rsa
+id_rsa.pub
+
+# IDE and editor files
+.idea/
+*.sublime-*
+.atom/
+.brackets.json
+
+# OS generated files
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+
+# Docker and deployment artifacts
+.dockerignore
+docker-compose.override.yml
