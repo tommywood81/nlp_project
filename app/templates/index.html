@@ -67,54 +67,68 @@
         {% endif %}
       </form>
 
-      {% set model_infos = {
-        'sentiment': {
-          'title': 'Sentiment (TextBlob)',
-          'model': 'TextBlob (PatternAnalyzer)',
-          'accuracy': '~60-70% on movie reviews (not SOTA, but fast and simple)',
-          'used_by': 'Prototyping, education, quick sentiment checks',
-          'description': 'Rule-based, lexicon-driven sentiment analysis.'
-        },
-        'ner': {
-          'title': 'NER (spaCy en_core_web_sm)',
-          'model': 'spaCy en_core_web_sm',
-          'accuracy': '~85% F-score (CoNLL-2003 NER)',
-          'used_by': 'Explosion AI, research, industry demos',
-          'description': 'Lightweight English NER, POS, and dependency parser.'
-        },
-        'summarize': {
-          'title': 'Summarise (t5-small)',
-          'model': 'HuggingFace t5-small',
-          'accuracy': 'ROUGE-2 F1 ~18-20 (CNN/DailyMail)',
-          'used_by': 'Research, demos, low-resource summarisation',
-          'description': 'Transformer-based, pre-trained for text-to-text tasks.'
-        },
-        'emotion': {
-          'title': 'Emotion (distilbert-base-uncased-emotion)',
-          'model': 'bhadresh-savani/distilbert-base-uncased-emotion',
-          'accuracy': '~91% (GoEmotions dataset)',
-          'used_by': 'Emotion detection demos, chatbots',
-          'description': 'DistilBERT fine-tuned for emotion classification.'
-        },
-        'qa': {
-          'title': 'QA (distilbert-base-cased-distilled-squad)',
-          'model': 'distilbert/distilbert-base-cased-distilled-squad',
-          'accuracy': 'EM: 79.1, F1: 86.9 (SQuAD v1.1)',
-          'used_by': 'Lightweight QA demos, education',
-          'description': 'DistilBERT distilled from BERT, fine-tuned on SQuAD.'
-        }
-      } %}
 
-      <div class="explanation-card">
-        <h2>Model Information</h2>
-        {% set info = model_infos.get(task, {}) %}
-        <p>
-          <strong>{{ info.title }}</strong><br>
-          <b>Model:</b> {{ info.model }}<br>
-          <b>Accuracy:</b> {{ info.accuracy }}<br>
-          <b>Used by:</b> {{ info.used_by }}<br>
-          <b>Description:</b> {{ info.description }}
-        </p>
+
+      <div class="model-info-card">
+        <h3>🤖 Model Information</h3>
+        <div class="model-info-grid">
+          <div class="model-info-item">
+            <strong>Model:</strong>
+            {% if task == "sentiment" %}
+              TextBlob (PatternAnalyzer)
+            {% elif task == "ner" %}
+              spaCy en_core_web_sm
+            {% elif task == "summarize" %}
+              HuggingFace t5-small
+            {% elif task == "emotion" %}
+              bhadresh-savani/distilbert-base-uncased-emotion
+            {% elif task == "qa" %}
+              distilbert/distilbert-base-cased-distilled-squad
+            {% endif %}
+          </div>
+          <div class="model-info-item">
+            <strong>Accuracy:</strong>
+            {% if task == "sentiment" %}
+              ~60-70% on movie reviews
+            {% elif task == "ner" %}
+              ~85% F-score (CoNLL-2003)
+            {% elif task == "summarize" %}
+              ROUGE-2 F1 ~18-20 (CNN/DailyMail)
+            {% elif task == "emotion" %}
+              ~91% (GoEmotions dataset)
+            {% elif task == "qa" %}
+              EM: 79.1, F1: 86.9 (SQuAD v1.1)
+            {% endif %}
+          </div>
+          <div class="model-info-item">
+            <strong>Type:</strong>
+            {% if task == "sentiment" %}
+              Rule-based, lexicon-driven
+            {% elif task == "ner" %}
+              Transformer-based, pre-trained
+            {% elif task == "summarize" %}
+              Transformer-based, text-to-text
+            {% elif task == "emotion" %}
+              DistilBERT fine-tuned
+            {% elif task == "qa" %}
+              DistilBERT distilled from BERT
+            {% endif %}
+          </div>
+          <div class="model-info-item">
+            <strong>Use Case:</strong>
+            {% if task == "sentiment" %}
+              Prototyping, education, quick checks
+            {% elif task == "ner" %}
+              Named entity recognition, POS tagging
+            {% elif task == "summarize" %}
+              Text summarization, content condensation
+            {% elif task == "emotion" %}
+              Emotion detection, sentiment analysis
+            {% elif task == "qa" %}
+              Question answering, information extraction
+            {% endif %}
+          </div>
+        </div>
       </div>
 
       {% set blurbs = {

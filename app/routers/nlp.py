@@ -113,5 +113,28 @@ def analyze(request: Request, task: str, text: str = Form(...), context: str = F
     if task == "qa" and (not text.strip() or not context.strip()):
         error_msg = "Both question and context are required for QA. Please provide both."
         return templates.TemplateResponse("result.html", {"request": request, "result": error_msg, "task": task})
+    
     result = strategies[task].analyze(text=text, context=context)
-    return templates.TemplateResponse("result.html", {"request": request, "result": result, "task": task})
+    
+    # Add blurbs for explanation
+    blurbs = {
+        'sentiment': 'Reveals tone and objectivity; polarity in [-1,1], subjectivity in [0,1].',
+        'ner': 'Finds entities like people, places, and organisations using token classification.',
+        'summarize': 'Condenses long text into concise, readable summaries.',
+        'emotion': 'Classifies nuanced emotions with per-class scores.',
+        'qa': 'Extracts the most relevant answer span from the provided context.'
+    }
+    
+    template_data = {
+        "request": request, 
+        "result": result, 
+        "task": task,
+        "blurbs": blurbs
+    }
+    
+    # Add question and context for QA results
+    if task == "qa":
+        template_data["question"] = text
+        template_data["context"] = context
+    
+    return templates.TemplateResponse("result.html", template_data)
