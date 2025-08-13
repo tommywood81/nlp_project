@@ -8,7 +8,7 @@ This dashboard lets you analyze text in multiple ways using state-of-the-art NLP
 
 ## 🚀 Live Demo
 
-**Production URL**: http://209.38.89.159:8001
+**Production URL**: https://tinyurl.com/3y4fmarv
 
 The dashboard is deployed on a Digital Ocean droplet and features:
 - Real-time news analysis from ABC News Australia
